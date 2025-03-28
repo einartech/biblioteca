@@ -1,15 +1,15 @@
 package com.biblioteca;
 
+import java.util.Arrays;
+
 import com.biblioteca.model.Book;
 import com.biblioteca.model.BookDAO;
-
-import java.util.Arrays;
 
 public class App {
     public static void main(String[] args) {
         // Crear un nuevo objeto Book
         Book book = new Book(
-                "The Grewerat CAROL", // title
+                "La prueba del book", // title
                 Arrays.asList("F. Scott CAROL"), // author
                 "A classic CAROL set in the Jazz Age.", // description
                 978074365, // isbn
