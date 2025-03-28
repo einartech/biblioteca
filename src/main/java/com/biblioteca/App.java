@@ -9,11 +9,11 @@ public class App {
     public static void main(String[] args) {
         // Crear un nuevo objeto Book
         Book book = new Book(
-                "The Great EINAR", // title
-                Arrays.asList("F. Scott EINAR"), // author
-                "A classic EINAR set in the Jazz Age.", // description
+                "The Grewerat CAROL", // title
+                Arrays.asList("F. Scott CAROL"), // author
+                "A classic CAROL set in the Jazz Age.", // description
                 978074365, // isbn
-                Arrays.asList("EINAR", "s"), // gender
+                Arrays.asList("EINwCAROLrAR", "s"), // gender
                 180 // pages
         );
 
