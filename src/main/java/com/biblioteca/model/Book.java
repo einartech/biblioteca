@@ -32,7 +32,7 @@ public class Book {
         return this.title;
     }
 
-    public List getAuthor() {
+    public List<String> getAuthor() {
         return this.author;
     }
 
@@ -44,7 +44,7 @@ public class Book {
         return this.isbn;
     }
 
-    public List getGender() {
+    public List<String> getGender() {
         return this.gender;
     }
 

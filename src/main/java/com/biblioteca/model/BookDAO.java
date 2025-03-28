@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Array;
 
 import com.biblioteca.config.DBManager;
-import com.biblioteca.utils.ExceptionHandler;
+// import com.biblioteca.utils.ExceptionHandler;
 
 public class BookDAO {
 
