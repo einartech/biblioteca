@@ -3,18 +3,16 @@ package com.biblioteca.model;
 import java.util.List;
 
 public class Book {
-
-    // PROPIEDADESD DE LA ENTIDAD
     private int id;
     private String title;
     private List<String> author;
     private String description;
-    private int isbn;
+    private long isbn;
     private List<String> gender;
     private int pages;
 
-    // CONSTRUCTOR DE LA ENTIDAD
-    public Book(String title, List<String> author, String description, int isbn, List<String> gender, int pages) {
+    // Constructor
+    public Book(String title, List<String> author, String description, long isbn, List<String> gender, int pages) {
         this.title = title;
         this.author = author;
         this.description = description;
@@ -23,63 +21,60 @@ public class Book {
         this.pages = pages;
     }
 
-    // GETTERS DE LA ENTIDAD
+    // Getters y setters
     public int getId() {
-        return this.id;
+        return id;
     }
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public List<String> getAuthor() {
-        return this.author;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public int getIsbn() {
-        return this.isbn;
-    }
-
-    public List<String> getGender() {
-        return this.gender;
-    }
-
-    public int getPages() {
-        return this.pages;
-    }
-
-    // SETTERS DE LA ENTIDAD
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
+    public List<String> getAuthor() {
+        return author;
+    }
+
     public void setAuthor(List<String> author) {
         this.author = author;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public void setIsbn(int isbn) {
+    public long getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(long isbn) {
         this.isbn = isbn;
+    }
+
+    public List<String> getGender() {
+        return gender;
     }
 
     public void setGender(List<String> gender) {
         this.gender = gender;
     }
 
+    public int getPages() {
+        return pages;
+    }
+
     public void setPages(int pages) {
         this.pages = pages;
     }
-
 }

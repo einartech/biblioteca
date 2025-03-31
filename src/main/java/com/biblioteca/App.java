@@ -1,29 +1,55 @@
 package com.biblioteca;
 
-import java.util.Arrays;
+import com.biblioteca.controller.BookController;
+import com.biblioteca.view.BookView;
 
-import com.biblioteca.model.Book;
-import com.biblioteca.model.BookDAO;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class App {
-    public static void main(String[] args) {
-        // Crear un nuevo objeto Book
-        Book book = new Book(
-                "La prueba del book", // title
-                Arrays.asList("F. Scott CAROL"), // author
-                "A classic CAROL set in the Jazz Age.", // description
-                978074365, // isbn
-                Arrays.asList("EINwCAROLrAR", "s"), // gender
-                180 // pages
-        );
+    public static void main(String[] args) throws IOException {
+        BookController bookController = new BookController();
+        BookView bookView = new BookView(bookController);
 
-        // Crear una instancia de BookDAO
-        BookDAO bookDAO = new BookDAO();
+        String[] opciones = {
+                "1. Ver todos los libros",
+                "2. Añadir un libro",
+                "3. Editar un libro",
+                "4. Eliminar un libro",
+                "5. Buscar un libro por título",
+                "6. Buscar un libro por autor",
+                "7. Buscar un libro por género literario"
+        };
 
-        // Llamar al método createBook para insertar el libro en la base de datos
-        bookDAO.createBook(book);
+        Scanner scanner = new Scanner(System.in);
+        int seleccion = -1;
 
-        // Mensaje de confirmación
-        System.out.println("El libro ha sido insertado en la base de datos.");
+        while (true) {
+            System.out.println("Seleccione una opción ingresando un número (1-7):");
+            for (String opcion : opciones) {
+                System.out.println(opcion);
+            }
+
+            System.out.print("Ingrese su elección: ");
+            if (scanner.hasNextInt()) {
+                seleccion = scanner.nextInt();
+                if (seleccion >= 1 && seleccion <= 7) {
+                    break;
+                } else {
+                    System.out.println("Por favor, ingrese un número válido entre 1 y 7.");
+                }
+            } else {
+                System.out.println("Entrada inválida. Por favor, ingrese un número.");
+                scanner.next();
+            }
+        }
+
+        switch (seleccion) {
+            case 2:
+                bookView.createBook();
+                break;
+            default:
+                System.out.println("Funcionalidad no implementada.");
+        }
     }
 }

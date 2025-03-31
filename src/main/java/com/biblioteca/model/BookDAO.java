@@ -13,6 +13,8 @@ public class BookDAO {
     // Método para crear un libro
     public void createBook(Book book) {
         String sql = "INSERT INTO books (title, author, description, isbn, gender, pages) VALUES (?,?,?,?,?,?)";
+        boolean success = false;
+
         try (Connection connection = DBManager.initConnection();
                 PreparedStatement stmn = connection.prepareStatement(sql)) {
 
@@ -26,9 +28,41 @@ public class BookDAO {
             stmn.setInt(6, book.getPages());
 
             stmn.executeUpdate();
+            success = true;
             System.out.println("Libro insertado correctamente.");
+
         } catch (SQLException e) {
             System.err.println("Error al insertar el libro: " + e.getMessage());
+        } finally {
+            if (success) {
+                System.out.println("Operación createBook() finalizada con éxito.");
+            } else {
+                System.err.println("Operación createBook() finalizada con errores.");
+            }
+        }
+    }
+
+    // Metodo para eliminar un Libro
+    public void deleteBook(Book book) {
+        String sql = "DELETE FROM books WHERE isbn = ?";
+        boolean success = false;
+
+        try (Connection connection = DBManager.initConnection();
+                PreparedStatement stmn = connection.prepareStatement(sql)) {
+
+            stmn.setLong(1, book.getIsbn());
+            stmn.executeUpdate();
+            success = true;
+
+            System.out.println("Libro eliminado correctamente.");
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar el libro: " + e.getMessage());
+        } finally {
+            if (success) {
+                System.out.println("Operación deleteBook() finalizada con éxito.");
+            } else {
+                System.err.println("Operación deleteBook() finalizada con errores.");
+            }
         }
     }
 

@@ -4,15 +4,15 @@ import com.biblioteca.model.Book;
 import com.biblioteca.model.BookDAO;
 
 public class BookController {
+    private final BookDAO bookDAO;
 
-    BookDAO bookDAO;
-
-    public BookController(BookDAO bookDAO){
-        this.bookDAO = bookDAO;
+    // Constructor sin parámetros
+    public BookController() {
+        this.bookDAO = new BookDAO(); // Inicializa BookDAO
     }
 
-    public void createBook(Book book){
+    // Método para crear un libro
+    public void createBook(Book book) {
         bookDAO.createBook(book);
     }
-    
 }
