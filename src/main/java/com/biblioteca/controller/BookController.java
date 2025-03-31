@@ -15,4 +15,9 @@ public class BookController {
     public void createBook(Book book) {
         bookDAO.createBook(book);
     }
+
+    // Método para eliminar un libro por ISBN
+    public void deleteBook(long isbn) {
+        bookDAO.deleteBook(isbn);
+    }
 }

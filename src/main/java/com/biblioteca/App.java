@@ -3,14 +3,15 @@ package com.biblioteca;
 import com.biblioteca.controller.BookController;
 import com.biblioteca.view.BookView;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class App {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
+        // Instanciar el controlador y la vista
         BookController bookController = new BookController();
         BookView bookView = new BookView(bookController);
 
+        // Opciones del menú
         String[] opciones = {
                 "1. Ver todos los libros",
                 "2. Añadir un libro",
@@ -22,8 +23,9 @@ public class App {
         };
 
         Scanner scanner = new Scanner(System.in);
-        int seleccion = -1;
+        int seleccion;
 
+        // Mostrar el menú y capturar la selección del usuario
         while (true) {
             System.out.println("Seleccione una opción ingresando un número (1-7):");
             for (String opcion : opciones) {
@@ -34,22 +36,28 @@ public class App {
             if (scanner.hasNextInt()) {
                 seleccion = scanner.nextInt();
                 if (seleccion >= 1 && seleccion <= 7) {
-                    break;
+                    break; // Salir del bucle si la entrada es válida
                 } else {
                     System.out.println("Por favor, ingrese un número válido entre 1 y 7.");
                 }
             } else {
                 System.out.println("Entrada inválida. Por favor, ingrese un número.");
-                scanner.next();
+                scanner.next(); // Limpiar la entrada inválida
             }
         }
 
+        // Ejecutar la opción seleccionada
         switch (seleccion) {
             case 2:
-                bookView.createBook();
+                bookView.createBook(); // Llamar al método createBook de BookView
+                break;
+            case 4:
+                bookView.deleteBook(); // Llamar al método deleteBook de BookView
                 break;
             default:
-                System.out.println("Funcionalidad no implementada.");
+                System.out.println("Funcionalidad no implementada en App.");
         }
+
+        scanner.close(); // Cerrar el scanner
     }
 }
