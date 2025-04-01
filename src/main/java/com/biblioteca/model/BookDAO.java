@@ -1,10 +1,13 @@
 package com.biblioteca.model;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Array;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import com.biblioteca.config.DBManager;
 
@@ -81,4 +84,37 @@ public class BookDAO {
             System.err.println("Error al obtener los libros: " + e.getMessage());
         }
     }
+    // Método para buscar libros por autor
+public List<Book> getBookByAuthor(List<String> authors) {
+    List<Book> books = new ArrayList<>();
+    String sql = "SELECT * FROM books WHERE author && ?::text[]";
+
+    try (Connection connection = DBManager.initConnection();
+         PreparedStatement stmn = connection.prepareStatement(sql)) {
+
+        Array authorArray = connection.createArrayOf("text", authors.toArray());
+        stmn.setArray(1, authorArray);
+
+        ResultSet rs = stmn.executeQuery();
+
+        while (rs.next()) {
+            Book book = new Book(
+                rs.getString("title"),
+                Arrays.asList((String[]) rs.getArray("author").getArray()),
+                rs.getString("description"),
+                rs.getLong("isbn"),
+                Arrays.asList((String[]) rs.getArray("gender").getArray()),
+                rs.getInt("pages")
+            );
+            books.add(book);
+        }
+
+        System.out.println("Libros encontrados mediante autor correctamente.");
+    } catch (SQLException e) {
+        System.err.println("Error al buscar libros por autor: " + e.getMessage());
+    }
+
+    return books;
+}
+
 }

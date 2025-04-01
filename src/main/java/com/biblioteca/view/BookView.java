@@ -1,10 +1,10 @@
 package com.biblioteca.view;
 
-import com.biblioteca.controller.BookController;
-import com.biblioteca.model.Book;
-
 import java.util.Arrays;
 import java.util.Scanner;
+
+import com.biblioteca.controller.BookController;
+import com.biblioteca.model.Book;
 
 public class BookView {
     private final BookController bookController;
@@ -67,5 +67,18 @@ public class BookView {
     public void getAllBooks() {
         // Llamar al método getAllBooks del controlador
         bookController.getAllBooks();
+    }
+
+    // Método para ver un libro por autor
+    public void getBookByAuthor() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Ingrese el nombre del autor: ");
+        String author = scanner.nextLine();
+
+        // Llamar al método getBookByAuthor del controlador
+        bookController.getBookByAuthor(author);
+
+        System.out.println("Operación de búsqueda finalizada.");
     }
 }
