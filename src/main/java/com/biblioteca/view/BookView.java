@@ -110,7 +110,7 @@ public class BookView {
         Book book = new Book(null, null, null, 0, Arrays.asList(genre), 0);
 
         // Llamar al método getBooksByGenre del controlador
-        bookController.getBooksByGenre(book);
+        bookController.getBooksByGenre(genre);
 
         scanner.close(); // Cerrar el escáner
         System.out.println("Operación de búsqueda por género finalizada.");

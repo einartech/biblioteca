@@ -30,7 +30,7 @@ public class BookController {
         bookDAO.getAllBooks();
     }
 
-    public void getBooksByGenre(Book book) {
-        bookDAO.getBooksByGenre(book);
+    public void getBooksByGenre(String genre) {
+        bookDAO.getBooksByGenre(genre);
     }
 }
