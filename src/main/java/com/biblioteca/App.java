@@ -48,11 +48,14 @@ public class App {
 
         // Ejecutar la opción seleccionada
         switch (seleccion) {
-            case 2:
-                bookView.createBook(); // Llamar al método createBook de BookView
-                break;
+            // case 2:
+            //     bookView.createBook(); // Llamar al método createBook de BookView
+            //     break;
             case 4:
                 bookView.deleteBook(); // Llamar al método deleteBook de BookView
+                break;
+            case 5:
+                bookView.searchBookByTitle(); 
                 break;
             default:
                 System.out.println("Funcionalidad no implementada en App.");

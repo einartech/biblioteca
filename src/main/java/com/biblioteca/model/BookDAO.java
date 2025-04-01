@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.sql.Array;
 
@@ -61,22 +62,39 @@ public class BookDAO {
     }
     
     // Método para buscar un libro por título
-    public void searchBookByTitle(String title) {
-        String sql = "SELECT title FROM books WHERE title ILIKE ?";
+    public List<Book> searchBookByTitle(String title) {
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM books WHERE title ILIKE ?";
 
-        try (Connection connection = DBManager.initConnection();
-             PreparedStatement stmn = connection.prepareStatement(sql)) {
+        try {
+            Connection connection = DBManager.initConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql);
 
-            stmn.setString(1, "%" + title + "%");
-            ResultSet rs = stmn.executeQuery();
+            stmt.setString(1, "%" + title + "%");
 
-            if (rs.next()) {
-                System.out.println("Libro encontrado: " + rs.getString("title"));
-            } else {
-                System.out.println("No se encontró un libro con ese título.");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                // Convertir los arrays de la base de datos a listas de Strings
+                String[] authors = (String[]) rs.getArray("author").getArray();
+                String[] genders = (String[]) rs.getArray("gender").getArray();
+
+                Book book = new Book();
+                book.setId(rs.getInt("id"));
+                book.setTitle(rs.getString("title"));
+                book.setAuthor(Arrays.asList(authors));
+                book.setDescription(rs.getString("description"));
+                book.setIsbn( rs.getLong("isbn"));
+                book.setGender(Arrays.asList(genders));
+                book.setPages(rs.getInt("pages"));
+                book.setYear(rs.getInt("year"));
+        
+                books.add(book);
             }
+
         } catch (SQLException e) {
-            System.err.println("Error al buscar el libro por título: " + e.getMessage());
+            System.err.println("Error al buscar libros por título: " + e.getMessage());
         }
+
+        return books;
     }
 }

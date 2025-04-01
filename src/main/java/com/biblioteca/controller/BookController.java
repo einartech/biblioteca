@@ -1,5 +1,7 @@
 package com.biblioteca.controller;
 
+import java.util.List;
+
 import com.biblioteca.model.Book;
 import com.biblioteca.model.BookDAO;
 
@@ -19,5 +21,10 @@ public class BookController {
     // Método para eliminar un libro por ISBN
     public void deleteBook(long isbn) {
         bookDAO.deleteBook(isbn);
+    }
+
+    // Método para buscar por titulo
+    public List<Book> searchBookByTitle(String title) {
+        return bookDAO.searchBookByTitle(title);
     }
 }
