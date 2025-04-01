@@ -46,13 +46,16 @@ public class BookView {
         bookController.createBook(book);
 
         System.out.println("El libro ha sido añadido correctamente.");
+        scanner.close(); // Cerrar el escáner
     }
 
     // Método para eliminar un libro
     public void deleteBook() {
         Scanner scanner = new Scanner(System.in);
 
+        try {
         System.out.print("Ingrese el ISBN del libro que desea eliminar: ");
+        
         if (!scanner.hasNextLong()) {
             System.out.println("El ISBN ingresado no es válido. Intente nuevamente.");
             return;
@@ -64,6 +67,9 @@ public class BookView {
         bookController.deleteBook(isbn);
 
         System.out.println("Operación de eliminación finalizada.");
+        } finally {
+            scanner.close(); // Cerrar el escáner
+        }	
     }
 
     public void updateBook() {
@@ -91,6 +97,7 @@ public class BookView {
 
         // Llamar al controlador para actualizar el libro
         bookController.updateBook(book);
+        scanner.close(); // Cerrar el escáner
     }
 
     // Método para ver todos los libros
@@ -106,13 +113,10 @@ public class BookView {
         System.out.print("Ingrese el género del libro: ");
         String genre = scanner.nextLine();
 
-        // Crear un objeto Book con el género proporcionado
-        Book book = new Book(null, null, null, 0, Arrays.asList(genre), 0);
-
         // Llamar al método getBooksByGenre del controlador
         bookController.getBooksByGenre(genre);
-
         scanner.close(); // Cerrar el escáner
+
         System.out.println("Operación de búsqueda por género finalizada.");
     }
 
@@ -125,5 +129,6 @@ public class BookView {
 
         // Llamar al método getBookByAuthor del controlador
         bookController.getBookByAuthor(author, null);
+        scanner.close(); // Cerrar el escáner
     }
 }
