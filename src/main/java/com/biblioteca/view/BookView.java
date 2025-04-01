@@ -62,4 +62,10 @@ public class BookView {
 
         System.out.println("Operación de eliminación finalizada.");
     }
+
+    // Método para ver todos los libros
+    public void getAllBooks() {
+        // Llamar al método getAllBooks del controlador
+        bookController.getAllBooks();
+    }
 }

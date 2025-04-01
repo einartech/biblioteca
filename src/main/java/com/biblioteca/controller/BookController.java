@@ -20,4 +20,9 @@ public class BookController {
     public void deleteBook(long isbn) {
         bookDAO.deleteBook(isbn);
     }
+
+    // Método para ver todos los libros
+    public void getAllBooks() {
+        bookDAO.getAllBooks();
+    }
 }

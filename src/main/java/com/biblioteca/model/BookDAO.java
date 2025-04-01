@@ -56,4 +56,18 @@ public class BookDAO {
             System.err.println("Error al eliminar el libro con ISBN " + isbn + ": " + e.getMessage());
         }
     }
+
+    // Metodo para ver todos los libros
+    public void getAllBooks() {
+        String sql = "SELECT * FROM books";
+
+        try (Connection connection = DBManager.initConnection();
+                PreparedStatement stmn = connection.prepareStatement(sql)) {
+
+            // Aquí puedes ejecutar la consulta y procesar los resultados
+            // Por ejemplo, usando ResultSet para obtener los datos de los libros
+        } catch (SQLException e) {
+            System.err.println("Error al obtener los libros: " + e.getMessage());
+        }
+    }
 }
