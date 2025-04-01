@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Array;
+import java.sql.ResultSet;
 
 import com.biblioteca.config.DBManager;
 
@@ -65,7 +66,17 @@ public class BookDAO {
                 PreparedStatement stmn = connection.prepareStatement(sql)) {
 
             // Aquí puedes ejecutar la consulta y procesar los resultados
-            // Por ejemplo, usando ResultSet para obtener los datos de los libros
+            ResultSet rs = stmn.executeQuery();
+            while (rs.next()) {
+                System.out.println("---------------------------");
+                System.out.println("Título: " + rs.getString("title"));
+                System.out.println("Autor(es): " + rs.getArray("author"));
+                System.out.println("Descripción: " + rs.getString("description"));
+                System.out.println("ISBN: " + rs.getLong("isbn"));
+                System.out.println("Género(s): " + rs.getArray("gender"));
+                System.out.println("Páginas: " + rs.getInt("pages"));
+                System.out.println("---------------------------");
+            }
         } catch (SQLException e) {
             System.err.println("Error al obtener los libros: " + e.getMessage());
         }
