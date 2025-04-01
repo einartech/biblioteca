@@ -1,6 +1,7 @@
 package com.biblioteca.model;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Array;
@@ -24,6 +25,7 @@ public class BookDAO {
             Array genderArray = connection.createArrayOf("text", book.getGender().toArray());
             stmn.setArray(5, genderArray);
             stmn.setInt(6, book.getPages());
+            stmn.setInt(7, book.getYear());
 
             stmn.executeUpdate();
             System.out.println("Libro insertado correctamente.");
@@ -56,4 +58,32 @@ public class BookDAO {
             System.err.println("Error al eliminar el libro con ISBN " + isbn + ": " + e.getMessage());
         }
     }
+    //Modificar un libro
+    public void updateBook (Book book) {
+       String sql = "UPDATE books SET title = ?, description = ?, isbn = ?, pages = ?, year = ? WHERE book_id = ?";
+
+        try (Connection connection = DBManager.initConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, book.getTitle());
+            stmt.setString(2, book.getDescription());
+            stmt.setLong(3, book.getIsbn());
+            stmt.setInt(4, book.getPages());
+            stmt.setInt(5, book.getYear());
+            stmt.setInt(6, book.getId());
+
+            int filas = stmt.executeUpdate();
+
+            if (filas > 0) {
+                System.out.println(" Libro actualizado correctamente.");
+            } else {
+                System.out.println("No se encontró ningún libro con ese ID.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

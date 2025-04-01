@@ -20,4 +20,8 @@ public class BookController {
     public void deleteBook(long isbn) {
         bookDAO.deleteBook(isbn);
     }
+
+    public void updateBook(Book book) {
+        bookDAO.updateBook(book);
+    }
 }

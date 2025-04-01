@@ -38,8 +38,11 @@ public class BookView {
         System.out.print("Ingrese el número de páginas: ");
         int pages = scanner.nextInt();
 
+        System.out.print("Ingrese año publicacion");
+        int year = scanner.nextInt();
+
         // Crear un objeto Book y pasarlo al controlador
-        Book book = new Book(title, Arrays.asList(authors), description, isbn, Arrays.asList(genres), pages);
+        Book book = new Book(title, Arrays.asList(authors), description, isbn, Arrays.asList(genres), pages, year);
         bookController.createBook(book);
 
         System.out.println("El libro ha sido añadido correctamente.");
@@ -61,5 +64,43 @@ public class BookView {
         bookController.deleteBook(isbn);
 
         System.out.println("Operación de eliminación finalizada.");
+    }
+
+    public void updateBook() {
+        Scanner scanner = new Scanner(System.in);
+    
+        System.out.print("Ingrese el ID del libro a actualizar: ");
+        int bookId = scanner.nextInt();
+        scanner.nextLine();
+    
+        System.out.print("Nuevo título del libro: ");
+        String title = scanner.nextLine();
+    
+        System.out.print("Nuevos autores (separados por comas): ");
+        String[] authors = scanner.nextLine().split(",");
+    
+        System.out.print("Nueva descripción del libro: ");
+        String description = scanner.nextLine();
+    
+        System.out.print("Nuevo ISBN: ");
+        long isbn = scanner.nextLong();
+        scanner.nextLine();
+    
+        System.out.print("Nuevos géneros (separados por comas): ");
+        String[] genres = scanner.nextLine().split(",");
+    
+        System.out.print("Nuevo número de páginas: ");
+        int pages = scanner.nextInt();
+    
+        System.out.print("Nuevo año de publicación: ");
+        int year = scanner.nextInt();
+    
+        // Crear el objeto Book actualizado
+        Book book = new Book(bookId, title, Arrays.asList(authors), description, isbn, Arrays.asList(genres), pages, year);
+    
+        // Llamar al método del controlador para hacer la actualización
+        bookController.updateBook(book);
+    
+        System.out.println("El libro ha sido actualizado correctamente.");
     }
 }

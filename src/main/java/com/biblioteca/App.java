@@ -51,6 +51,9 @@ public class App {
             case 2:
                 bookView.createBook(); // Llamar al método createBook de BookView
                 break;
+            case 3:
+                bookView.updateBook();
+                break;
             case 4:
                 bookView.deleteBook(); // Llamar al método deleteBook de BookView
                 break;
