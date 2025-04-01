@@ -1,9 +1,9 @@
 package com.biblioteca;
 
+import java.util.Scanner;
+
 import com.biblioteca.controller.BookController;
 import com.biblioteca.view.BookView;
-
-import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
@@ -48,14 +48,26 @@ public class App {
 
         // Ejecutar la opción seleccionada
         switch (seleccion) {
+            case 1:
+                bookController.getAllBooks(); // Llamar al método getAllBooks de BookController
+                break;
             // case 2:
             //     bookView.createBook(); // Llamar al método createBook de BookView
             //     break;
+            case 3:
+                bookView.updateBook();
+                break;
             case 4:
                 bookView.deleteBook(); // Llamar al método deleteBook de BookView
                 break;
             case 5:
                 bookView.searchBookByTitle(); 
+                break;
+            case 6:
+                bookView.getBookByAuthor(); // Llamar al método getBookByAuthor de BookView
+                break;
+            case 7:
+                bookView.getBooksByGenre(); // Llamar al método getBooksByGenre de BookView
                 break;
             default:
                 System.out.println("Funcionalidad no implementada en App.");

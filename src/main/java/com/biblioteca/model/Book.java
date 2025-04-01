@@ -24,7 +24,20 @@ public class Book {
         this.isbn = isbn;
         this.gender = gender;
         this.pages = pages;
-        this.year = year;
+        // this.year = year;
+    }
+
+    public Book(int id, String title, List<String> author, String description, long isbn, List<String> gender,
+            int pages) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.description = description;
+        this.isbn = isbn;
+        this.gender = gender;
+        this.pages = pages;
+        // this.year = year;
+
     }
 
     // Getters y setters
@@ -91,4 +104,16 @@ public class Book {
     public void setYear( int year) {
         this.year = year;
     }
+
+    public String toString() {
+        return this.title; 
+    }
+
+    // public int getYear() {
+    // return year;
+    // }
+
+    // public void setYear(int year) {
+    // this.year = year;
+    // }
 }

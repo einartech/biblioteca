@@ -1,7 +1,10 @@
 package com.biblioteca.model;
 
+import java.sql.Array;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,6 +31,7 @@ public class BookDAO {
             Array genderArray = connection.createArrayOf("text", book.getGender().toArray());
             stmn.setArray(5, genderArray);
             stmn.setInt(6, book.getPages());
+            // stmn.setInt(7, book.getYear());
 
             stmn.executeUpdate();
             System.out.println("Libro insertado correctamente.");
