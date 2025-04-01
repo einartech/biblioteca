@@ -92,6 +92,10 @@ public class Book {
         this.pages = pages;
     }
 
+    public String toString() {
+        return this.title; 
+    }
+
     // public int getYear() {
     // return year;
     // }

@@ -1,9 +1,9 @@
 package com.biblioteca;
 
+import java.util.Scanner;
+
 import com.biblioteca.controller.BookController;
 import com.biblioteca.view.BookView;
-
-import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
@@ -62,6 +62,9 @@ public class App {
                 break;
             case 7:
                 bookView.getBooksByGenre(); // Llamar al método getBooksByGenre de BookView
+                break;
+            case 6:
+                bookView.getBookByAuthor(); // Llamar al método getBookByAuthor de BookView
                 break;
             default:
                 System.out.println("Funcionalidad no implementada en App.");
