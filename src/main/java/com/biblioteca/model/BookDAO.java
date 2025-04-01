@@ -2,7 +2,10 @@ package com.biblioteca.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.Array;
 
 import com.biblioteca.config.DBManager;
@@ -54,6 +57,26 @@ public class BookDAO {
             }
         } catch (SQLException e) {
             System.err.println("Error al eliminar el libro con ISBN " + isbn + ": " + e.getMessage());
+        }
+    }
+    
+    // Método para buscar un libro por título
+    public void searchBookByTitle(String title) {
+        String sql = "SELECT title FROM books WHERE title ILIKE ?";
+
+        try (Connection connection = DBManager.initConnection();
+             PreparedStatement stmn = connection.prepareStatement(sql)) {
+
+            stmn.setString(1, "%" + title + "%");
+            ResultSet rs = stmn.executeQuery();
+
+            if (rs.next()) {
+                System.out.println("Libro encontrado: " + rs.getString("title"));
+            } else {
+                System.out.println("No se encontró un libro con ese título.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar el libro por título: " + e.getMessage());
         }
     }
 }
