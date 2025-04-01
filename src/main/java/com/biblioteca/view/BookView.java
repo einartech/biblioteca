@@ -38,6 +38,9 @@ public class BookView {
         System.out.print("Ingrese el número de páginas: ");
         int pages = scanner.nextInt();
 
+        // System.out.print("Ingrese año publicacion");
+        // int year = scanner.nextInt();
+
         // Crear un objeto Book y pasarlo al controlador
         Book book = new Book(title, Arrays.asList(authors), description, isbn, Arrays.asList(genres), pages);
         bookController.createBook(book);
@@ -61,6 +64,33 @@ public class BookView {
         bookController.deleteBook(isbn);
 
         System.out.println("Operación de eliminación finalizada.");
+    }
+
+    public void updateBook() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Ingrese el ID del libro que desea actualizar: ");
+        int id = scanner.nextInt();
+        scanner.nextLine(); // Limpiar el buffer
+
+        System.out.print("Nuevo título: ");
+        String title = scanner.nextLine();
+
+        System.out.print("Nueva descripción: ");
+        String description = scanner.nextLine();
+
+        System.out.print("Nuevo ISBN: ");
+        long isbn = scanner.nextLong();
+
+        System.out.print("Nuevo número de páginas: ");
+        int pages = scanner.nextInt();
+
+        // Crear un objeto Book con los datos actualizados
+        Book book = new Book(title, null, description, isbn, null, pages);
+        book.setId(id); // Establecer el ID del libro
+
+        // Llamar al controlador para actualizar el libro
+        bookController.updateBook(book);
     }
 
     // Método para ver todos los libros

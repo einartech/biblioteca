@@ -23,6 +23,10 @@ public class BookController {
         bookDAO.deleteBook(isbn);
     }
 
+    public void updateBook(Book book) {
+        bookDAO.updateBook(book);
+    }
+
     // Método para ver todos los libros
     public void getAllBooks() {
         bookDAO.getAllBooks();
