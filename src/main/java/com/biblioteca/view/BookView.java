@@ -98,4 +98,21 @@ public class BookView {
         // Llamar al método getAllBooks del controlador
         bookController.getAllBooks();
     }
+
+    // Método para ver libros por género
+    public void getBooksByGenre() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Ingrese el género del libro: ");
+        String genre = scanner.nextLine();
+
+        // Crear un objeto Book con el género proporcionado
+        Book book = new Book(null, null, null, 0, Arrays.asList(genre), 0);
+
+        // Llamar al método getBooksByGenre del controlador
+        bookController.getBooksByGenre(book);
+
+        scanner.close(); // Cerrar el escáner
+        System.out.println("Operación de búsqueda por género finalizada.");
+    }
 }

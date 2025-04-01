@@ -108,4 +108,34 @@ public class BookDAO {
             System.err.println("Error al obtener los libros: " + e.getMessage());
         }
     }
+
+ // Metodo para filtrar los libros por su género
+ public void getBooksByGenre(Book book) {
+    String sql = "SELECT * FROM books WHERE genre = ?";
+
+    try (Connection connection = DBManager.initConnection();
+            PreparedStatement stmn = connection.prepareStatement(sql)) {
+
+        // Aquí puedes establecer el género que desear filtrar
+        Array genderArray = connection.createArrayOf("text", book.getGender().toArray());
+        stmn.setArray(5, genderArray);
+        
+        // Aquí puedes ejecutar la consulta y procesar los resultados
+        ResultSet rs = stmn.executeQuery();
+        while (rs.next()) {
+            System.out.println("---------------------------");
+            System.out.println("Título: " + rs.getString("title"));
+            System.out.println("Autor(es): " + rs.getArray("author"));
+            System.out.println("Descripción: " + rs.getString("description"));
+            System.out.println("ISBN: " + rs.getLong("isbn"));
+            System.out.println("Género(s): " + rs.getArray("gender"));
+            System.out.println("Páginas: " + rs.getInt("pages"));
+            System.out.println("---------------------------");
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener los libros: " + e.getMessage());
+    }
+}
+
+
 }

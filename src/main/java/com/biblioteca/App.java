@@ -60,6 +60,9 @@ public class App {
             case 4:
                 bookView.deleteBook(); // Llamar al método deleteBook de BookView
                 break;
+            case 7:
+                bookView.getBooksByGenre(); // Llamar al método getBooksByGenre de BookView
+                break;
             default:
                 System.out.println("Funcionalidad no implementada en App.");
         }

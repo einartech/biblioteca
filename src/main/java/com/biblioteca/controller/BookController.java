@@ -29,4 +29,8 @@ public class BookController {
     public void getAllBooks() {
         bookDAO.getAllBooks();
     }
+
+    public void getBooksByGenre(Book book) {
+        bookDAO.getBooksByGenre(book);
+    }
 }
