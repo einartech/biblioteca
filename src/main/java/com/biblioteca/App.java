@@ -48,6 +48,9 @@ public class App {
 
         // Ejecutar la opción seleccionada
         switch (seleccion) {
+            case 1:
+                bookController.getAllBooks(); // Llamar al método getAllBooks de BookController
+                break;
             case 2:
                 bookView.createBook(); // Llamar al método createBook de BookView
                 break;
