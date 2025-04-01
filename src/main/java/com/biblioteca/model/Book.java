@@ -77,4 +77,8 @@ public class Book {
     public void setPages(int pages) {
         this.pages = pages;
     }
+
+    public String toString() {
+        return this.title; 
+    }
 }

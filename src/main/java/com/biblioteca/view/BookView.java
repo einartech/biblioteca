@@ -77,8 +77,6 @@ public class BookView {
         String author = scanner.nextLine();
 
         // Llamar al método getBookByAuthor del controlador
-        bookController.getBookByAuthor(author);
-
-        System.out.println("Operación de búsqueda finalizada.");
+        bookController.getBookByAuthor(author, null);
     }
 }
