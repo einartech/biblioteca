@@ -30,7 +30,6 @@ public class BookView {
 
         System.out.print("Ingrese el ISBN del libro: ");
         long isbn = scanner.nextLong();
-
         scanner.nextLine(); // Limpiar el buffer
 
         System.out.print("Ingrese los géneros (separados por comas): ");
@@ -38,16 +37,29 @@ public class BookView {
 
         System.out.print("Ingrese el número de páginas: ");
         int pages = scanner.nextInt();
+        scanner.nextLine(); // Limpiar el buffer
 
-        // System.out.print("Ingrese año publicacion");
-        // int year = scanner.nextInt();
+        System.out.print("Ingrese la editorial: ");
+        String publisher = scanner.nextLine();
 
-        // Crear un objeto Book y pasarlo al controlador
-        Book book = new Book(title, Arrays.asList(authors), description, isbn, Arrays.asList(genres), pages);
+        System.out.print("Ingrese el año de publicación: ");
+        int year = scanner.nextInt();
+
+        // Crear un objeto Book con los datos ingresados
+        Book book = new Book(
+                title,
+                Arrays.asList(authors),
+                description,
+                isbn,
+                Arrays.asList(genres),
+                pages,
+                year,
+                publisher);
+
+        // Enviar el libro al controlador
         bookController.createBook(book);
 
         System.out.println("El libro ha sido añadido correctamente.");
-        scanner.close(); // Cerrar el escáner
     }
 
     // Método para eliminar un libro
@@ -55,17 +67,17 @@ public class BookView {
         Scanner scanner = new Scanner(System.in);
 
         try {
-            System.out.print("Ingrese el ISBN del libro que desea eliminar: ");
+            System.out.print("Ingrese el id del libro que desea eliminar: ");
 
             if (!scanner.hasNextLong()) {
-                System.out.println("El ISBN ingresado no es válido. Intente nuevamente.");
+                System.out.println("El ID ingresado no es válido. Intente nuevamente.");
                 return;
             }
 
-            long isbn = scanner.nextLong();
+            int id = scanner.nextInt();
 
             // Llamar al método deleteBook del controlador
-            bookController.deleteBook(isbn);
+            bookController.deleteBook(id);
 
             System.out.println("Operación de eliminación finalizada.");
         } finally {
@@ -91,14 +103,29 @@ public class BookView {
 
         System.out.print("Nuevo número de páginas: ");
         int pages = scanner.nextInt();
+        scanner.nextLine(); // Limpiar el buffer
+
+        System.out.print("Nueva editorial: ");
+        String publisher = scanner.nextLine();
+
+        System.out.print("Nuevo año de publicación: ");
+        int year = scanner.nextInt();
 
         // Crear un objeto Book con los datos actualizados
-        Book book = new Book(title, null, description, isbn, null, pages);
+        Book book = new Book(
+                title,
+                null, // Autores no se actualizan en este caso
+                description,
+                isbn,
+                null, // Géneros no se actualizan en este caso
+                pages,
+                year,
+                publisher);
         book.setId(id); // Establecer el ID del libro
 
         // Llamar al controlador para actualizar el libro
         bookController.updateBook(book);
-        scanner.close(); // Cerrar el escáner
+        System.out.println("El libro ha sido actualizado correctamente.");
     }
 
     // Método para ver todos los libros
@@ -142,10 +169,11 @@ public class BookView {
                 System.out.println("Descripción: " + book.getDescription());
                 System.out.println("ISBN: " + book.getIsbn());
                 System.out.println("Autores: " + String.join(", ", book.getAuthor()));
-                System.out.println("Géneros: " + String.join(", ", book.getGender()));
+                System.out.println("Géneros: " + String.join(", ", book.getGenre()));
                 System.out.println("Páginas: " + book.getPages());
+                System.out.println("Editorial: " + book.getPublisher());
+                System.out.println("Año: " + book.getYear());
                 System.out.println("---------------------------");
-
             }
         }
     }

@@ -13,8 +13,10 @@ Este documento explica cómo interactuar con la tabla `books` de la base de dato
 | `author`      | `text[]`       | Lista de autores del libro (obligatorio).                                 |
 | `description` | `varchar(200)` | Breve descripción del libro (obligatorio).                                |
 | `isbn`        | `bigint`       | Número ISBN único del libro (obligatorio).                                |
-| `gender`      | `text[]`       | Lista de géneros literarios del libro (obligatorio).                      |
+| `genre`       | `text[]`       | Lista de géneros literarios del libro (obligatorio).                      |
 | `pages`       | `integer`      | Número de páginas del libro (obligatorio).                                |
+| `publisher`   | `varchar(100)` | Editorial del libro (opcional).                                           |
+| `year`        | `integer`      | Año de publicación del libro (obligatorio).                               |
 
 ---
 
@@ -25,9 +27,9 @@ Este documento explica cómo interactuar con la tabla `books` de la base de dato
 Para agregar un nuevo libro a la tabla, utiliza la instrucción `INSERT INTO`:
 
 ```sql
-INSERT INTO public.books (title, author, description, isbn, gender, pages)
+INSERT INTO public.books (title, author, description, isbn, genre, pages, publisher, year)
 VALUES
-('El Principito', ARRAY['Antoine de Saint-Exupéry'], 'Un clásico de la literatura infantil', 9781234567890, ARRAY['Ficción', 'Infantil'], 96);
+('El Principito', ARRAY['Antoine de Saint-Exupéry'], 'Un clásico de la literatura infantil', 9781234567890, ARRAY['Ficción', 'Infantil'], 96, 'Reynal & Hitchcock', 1943);
 ```
 
 ### **2. READ (Consultar registros)**
@@ -59,7 +61,7 @@ SELECT * FROM books WHERE title ILIKE '%principito%';
 Consulta para buscar libros que pertenezcan a un género específico, utiliza la instrucción `SELECT * FROM & WHERE & ANY`:
 
 ```sql
-SELECT * FROM books WHERE 'Ficción' = ANY (gender);
+SELECT * FROM books WHERE 'Ficción' = ANY (genre);
 ```
 
 ### **2.e. Buscar libros por autor**

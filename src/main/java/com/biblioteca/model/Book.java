@@ -10,25 +10,29 @@ public class Book {
     private long isbn;
     private List<String> genre;
     private int pages;
-
+    private int year;
     private String publisher;
-    Constructor sin parámetros
+
+    // Constructor sin parámetros
     public Book() {
     }
 
-
     // Constructor
-    public Book(String title, List<String> author, String description, long isbn, List<String> gender, int pages) {
+    public Book(String title, List<String> author, String description, long isbn, List<String> genre, int pages,
+            int year, String publisher) {
         this.title = title;
         this.author = author;
         this.description = description;
         this.isbn = isbn;
         this.genre = genre;
         this.pages = pages;
-        // this.year = year;
+        this.year = year;
+        this.publisher = publisher;
     }
 
-    public Book(int id, String title, List<String> author, String description, long isbn, List<String> genre, String publisher, int pages) {
+    public Book(int id, String title, List<String> author, String description,
+            long isbn, List<String> genre,
+            String publisher, int pages) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -36,7 +40,21 @@ public class Book {
         this.isbn = isbn;
         this.genre = genre;
         this.pages = pages;
-        // this.year = year;
+        this.year = year;
+        this.publisher = publisher;
+    }
+
+    public Book(String title, List<String> author, String description,
+            long isbn, List<String> genre,
+            String publisher, int pages) {
+        this.title = title;
+        this.author = author;
+        this.description = description;
+        this.isbn = isbn;
+        this.genre = genre;
+        this.pages = pages;
+        this.year = year;
+        this.publisher = publisher;
     }
 
     // Getters y setters
@@ -100,11 +118,19 @@ public class Book {
         return this.title;
     }
 
-    // public int getYear() {
-    // return year;
-    // }
+    public int getYear() {
+        return year;
+    }
 
-    // public void setYear(int year) {
-    // this.year = year;
-    // }
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
 }

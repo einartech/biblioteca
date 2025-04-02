@@ -20,8 +20,8 @@ public class BookController {
     }
 
     // Método para eliminar un libro por ISBN
-    public void deleteBook(long isbn) {
-        bookDAO.deleteBook(isbn);
+    public void deleteBook(int id) {
+        bookDAO.deleteBook(id);
     }
 
     public void updateBook(Book book) {

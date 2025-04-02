@@ -16,7 +16,7 @@ public class App {
                 "1. Ver todos los libros",
                 "2. Añadir un libro",
                 "3. Editar un libro",
-                "4. Eliminar un libro",
+                "4. Eliminar un libro por id",
                 "5. Buscar un libro por título",
                 "6. Buscar un libro por autor",
                 "7. Buscar un libro por género literario"
