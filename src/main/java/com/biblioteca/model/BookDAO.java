@@ -8,236 +8,243 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.biblioteca.config.DBManager;
 
 public class BookDAO {
+    private static final Logger logger = Logger.getLogger(BookDAO.class.getName());
 
-    // Método para crear un libro
+    // Consultas SQL como constantes
+    private static final String SQL_INSERT_BOOK = "INSERT INTO books (title, author, description, isbn, genre, pages, publisher, year) VALUES (?,?,?,?,?,?,?,?)";
+    private static final String SQL_DELETE_BOOK = "DELETE FROM books WHERE id = ?";
+    private static final String SQL_UPDATE_BOOK = "UPDATE books SET title = ?, author = ?, description = ?, isbn = ?, genre = ?, pages = ?, publisher = ?, year = ? WHERE id = ?";
+    private static final String SQL_SELECT_ALL_BOOKS = "SELECT * FROM books";
+    private static final String SQL_SELECT_BOOKS_BY_GENRE = "SELECT * FROM books WHERE ? = ANY (genre)";
+    private static final String SQL_SEARCH_BOOK_BY_TITLE = "SELECT * FROM books WHERE LOWER(title) LIKE LOWER(?)";
+    private static final String SQL_SEARCH_BOOK_BY_AUTHOR = "SELECT * FROM books WHERE ? = ANY (author)";
+
+    /**
+     * Método para crear un libro en la base de datos.
+     *
+     * @param book Objeto Book con los datos del libro a insertar.
+     */
     public void createBook(Book book) {
-        String sql = "INSERT INTO books (title, author, description, isbn, genre, pages, publisher, year) VALUES (?,?,?,?,?,?,?,?)";
-
         try (Connection connection = DBManager.initConnection();
-                PreparedStatement stmn = connection.prepareStatement(sql)) {
+                PreparedStatement stmn = connection.prepareStatement(SQL_INSERT_BOOK)) {
 
-            stmn.setString(1, book.getTitle());
-            Array authorArray = connection.createArrayOf("text", book.getAuthor().toArray());
-            stmn.setArray(2, authorArray);
-            stmn.setString(3, book.getDescription());
-            stmn.setLong(4, book.getIsbn());
-            Array genreArray = connection.createArrayOf("text", book.getGenre().toArray());
-            stmn.setArray(5, genreArray);
-            stmn.setInt(6, book.getPages());
-            stmn.setString(7, book.getPublisher());
-            stmn.setInt(8, book.getYear());
-
+            setBookParameters(stmn, book);
             stmn.executeUpdate();
-            System.out.println("Libro insertado correctamente.");
+            logger.info("Libro insertado correctamente.");
         } catch (SQLException e) {
-            System.err.println("Error al insertar el libro: " + e.getMessage());
+            logger.severe("Error al insertar el libro: " + e.getMessage());
         }
     }
 
-    // Método para eliminar un libro
-    public void deleteBook(int id) {
-        String sql = "DELETE FROM books WHERE id = ?";
+    /**
+     * Método para eliminar un libro por su ID.
+     *
+     * @param id ID del libro a eliminar.
+     * @return true si el libro fue eliminado, false en caso contrario.
+     */
+    public boolean deleteBook(int id) {
+        if (id <= 0) {
+            logger.warning("El id proporcionado no es válido.");
+            return false;
+        }
 
         try (Connection connection = DBManager.initConnection();
-                PreparedStatement stmn = connection.prepareStatement(sql)) {
+                PreparedStatement stmn = connection.prepareStatement(SQL_DELETE_BOOK)) {
 
-            if (id <= 0) {
-                System.err.println("El id proporcionado no es válido.");
-                return;
-            }
-
-            stmn.setLong(1, id); // Establecer el ISBN en la consulta
+            stmn.setInt(1, id);
             int rowsAffected = stmn.executeUpdate();
 
             if (rowsAffected > 0) {
-                System.out.println("Libro eliminado correctamente.");
+                logger.info("Libro eliminado correctamente.");
+                return true;
             } else {
-                System.out.println("No se encontró un libro con el id proporcionado.");
+                logger.warning("No se encontró un libro con el id proporcionado.");
+                return false;
             }
         } catch (SQLException e) {
-            System.err.println("Error al eliminar el libro con id " + id + ": " + e.getMessage());
+            logger.severe("Error al eliminar el libro con id " + id + ": " + e.getMessage());
+            return false;
         }
     }
 
-    // Modificar un libro
-    public void updateBook(Book book) {
-        String sql = "UPDATE books SET title = ?, author = ?, description = ?, isbn = ?, genre = ?, pages = ?, publisher = ?, year = ? WHERE id = ?";
-
+    /**
+     * Método para actualizar un libro en la base de datos.
+     *
+     * @param book Objeto Book con los datos actualizados.
+     * @return true si el libro fue actualizado, false en caso contrario.
+     */
+    public boolean updateBook(Book book) {
         try (Connection connection = DBManager.initConnection();
-                PreparedStatement stmt = connection.prepareStatement(sql)) {
+                PreparedStatement stmt = connection.prepareStatement(SQL_UPDATE_BOOK)) {
 
-            stmt.setString(1, book.getTitle());
-
-            // Manejar autores nulos
-            if (book.getAuthor() != null) {
-                Array authorArray = connection.createArrayOf("text", book.getAuthor().toArray());
-                stmt.setArray(2, authorArray);
-            } else {
-                stmt.setNull(2, java.sql.Types.ARRAY);
-            }
-
-            stmt.setString(3, book.getDescription());
-            stmt.setLong(4, book.getIsbn());
-
-            // Manejar géneros nulos
-            if (book.getGenre() != null) {
-                Array genreArray = connection.createArrayOf("text", book.getGenre().toArray());
-                stmt.setArray(5, genreArray);
-            } else {
-                stmt.setNull(5, java.sql.Types.ARRAY);
-            }
-
-            stmt.setInt(6, book.getPages());
-            stmt.setString(7, book.getPublisher());
-            stmt.setInt(8, book.getYear());
-            stmt.setInt(9, book.getId());
-
+            setBookParameters(stmt, book);
+            stmt.setInt(9, book.getId()); // ID del libro
             int rowsAffected = stmt.executeUpdate();
 
             if (rowsAffected > 0) {
-                System.out.println("El libro ha sido actualizado correctamente.");
+                logger.info("El libro ha sido actualizado correctamente.");
+                return true;
             } else {
-                System.out.println("No se encontró un libro con el ID proporcionado.");
+                logger.warning("No se encontró un libro con el ID proporcionado.");
+                return false;
             }
         } catch (SQLException e) {
-            System.err.println("Error al actualizar el libro: " + e.getMessage());
+            logger.severe("Error al actualizar el libro: " + e.getMessage());
+            return false;
         }
     }
 
-    // Metodo para ver todos los libros
-    public void getAllBooks() {
-        String sql = "SELECT * FROM books";
-
-        try (Connection connection = DBManager.initConnection();
-                PreparedStatement stmn = connection.prepareStatement(sql)) {
-
-            // Aquí puedes ejecutar la consulta y procesar los resultados
-            ResultSet rs = stmn.executeQuery();
-            while (rs.next()) {
-                System.out.println("---------------------------");
-                System.out.println("Título: " + rs.getString("title"));
-                System.out.println("Autor(es): " + rs.getArray("author"));
-                System.out.println("Descripcion: " + rs.getString("description"));
-                System.out.println("ISBN: " + rs.getLong("isbn"));
-                System.out.println("Género(s): " + rs.getArray("genre"));
-                System.out.println("Páginas: " + rs.getInt("pages"));
-                System.out.println("Editorial: " + rs.getString("publisher"));
-                System.out.println("Año : " + rs.getInt("year"));
-                System.out.println("---------------------------");
-            }
-        } catch (SQLException e) {
-            System.err.println("Error al obtener los libros: " + e.getMessage());
-        }
-    }
-
-    // Metodo para filtrar los libros por su género
-    public void getBooksByGenre(String genre) {
-        String sql = "SELECT id, title, author, isbn, pages, publisher, year FROM books WHERE ? = ANY (genre)";
-
-        try (Connection connection = DBManager.initConnection();
-                PreparedStatement stmt = connection.prepareStatement(sql)) {
-
-            stmt.setString(1, genre); // Establecer el género en la consulta
-            ResultSet rs = stmt.executeQuery();
-
-            System.out.println("Libros encontrados para el género '" + genre + "':");
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String title = rs.getString("title");
-                String author = rs.getString("author");
-                long isbn = rs.getLong("isbn");
-                int pages = rs.getInt("pages");
-                String publisher = rs.getString("publisher");
-                int year = rs.getInt("year");
-
-                System.out.println("ID: " + id);
-                System.out.println("Título: " + title);
-                System.out.println("Autor(es): " + author);
-                System.out.println("ISBN: " + isbn);
-                System.out.println("Páginas: " + pages);
-                System.out.println("Editorial: " + publisher);
-                System.out.println("Year: " + year);
-                System.out.println("-------------------------");
-            }
-        } catch (SQLException e) {
-            System.err.println("Error al obtener los libros: " + e.getMessage());
-        }
-    }
-
-    // Método para buscar libros por autor
-    public List<Book> getBookByAuthor(List<String> authors) {
-        String sql = "SELECT id, title, isbn, genre, pages, publisher, year FROM books WHERE author && ?";
-
+    /**
+     * Método para obtener todos los libros de la base de datos.
+     *
+     * @return Lista de objetos Book.
+     */
+    public List<Book> getAllBooks() {
         List<Book> books = new ArrayList<>();
 
         try (Connection connection = DBManager.initConnection();
-                PreparedStatement stmt = connection.prepareStatement(sql)) {
-
-            // Convertir la lista de autores a un arreglo de PostgreSQL
-            Array authorArray = connection.createArrayOf("text", authors.toArray());
-            stmt.setArray(1, authorArray); // Establecer el arreglo en la consulta
-
-            ResultSet rs = stmt.executeQuery();
+                PreparedStatement stmn = connection.prepareStatement(SQL_SELECT_ALL_BOOKS);
+                ResultSet rs = stmn.executeQuery()) {
 
             while (rs.next()) {
-                Book book = new Book();
-                book.setId(rs.getInt("id"));
-                book.setTitle(rs.getString("title"));
-                book.setIsbn(rs.getLong("isbn"));
-                book.setGenre(Arrays.asList((String[]) rs.getArray("genre").getArray()));
-                book.setPages(rs.getInt("pages"));
-                book.setPublisher(rs.getString("publisher"));
-                book.setYear(rs.getInt("year"));
-
-                books.add(book);
+                books.add(mapResultSetToBook(rs));
             }
         } catch (SQLException e) {
-            System.err.println("Error al obtener los libros: " + e.getMessage());
+            logger.severe("Error al obtener los libros: " + e.getMessage());
         }
 
         return books;
     }
 
-    // Método para buscar libros por título
-    // Método para buscar un libro por título
+    /**
+     * Método para buscar libros por género.
+     *
+     * @param genre Género literario a buscar.
+     * @return Lista de objetos Book que coinciden con el género.
+     */
+    public List<Book> getBooksByGenre(String genre) {
+        List<Book> books = new ArrayList<>();
+
+        try (Connection connection = DBManager.initConnection();
+                PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_BOOKS_BY_GENRE)) {
+
+            stmt.setString(1, genre);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    books.add(mapResultSetToBook(rs));
+                }
+            }
+        } catch (SQLException e) {
+            logger.severe("Error al obtener los libros por género: " + e.getMessage());
+        }
+
+        return books;
+    }
+
+    /**
+     * Busca libros por título.
+     *
+     * @param title Título o parte del título del libro.
+     * @return Lista de libros que coinciden con el título.
+     */
     public List<Book> searchBookByTitle(String title) {
         List<Book> books = new ArrayList<>();
-        String sql = "SELECT * FROM books WHERE title ILIKE ?";
 
-        try {
-            Connection connection = DBManager.initConnection();
-            PreparedStatement stmt = connection.prepareStatement(sql);
+        try (Connection connection = DBManager.initConnection();
+                PreparedStatement stmt = connection.prepareStatement(SQL_SEARCH_BOOK_BY_TITLE)) {
 
-            stmt.setString(1, "%" + title + "%");
-
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                // Convertir los arrays de la base de datos a listas de Strings
-                String[] authors = (String[]) rs.getArray("author").getArray();
-                String[] genres = (String[]) rs.getArray("genre").getArray();
-
-                Book book = new Book();
-                book.setId(rs.getInt("id"));
-                book.setTitle(rs.getString("title"));
-                book.setAuthor(Arrays.asList(authors));
-                book.setDescription(rs.getString("description"));
-                book.setIsbn(rs.getLong("isbn"));
-                book.setGenre(Arrays.asList(genres)); // Ahora funcionará
-                book.setPages(rs.getInt("pages"));
-                book.setPublisher(rs.getString("publisher"));
-                book.setYear(rs.getInt("year"));
-
-                books.add(book);
+            stmt.setString(1, "%" + title + "%"); // Usar comodines para búsqueda parcial
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    books.add(mapResultSetToBook(rs));
+                }
             }
-
         } catch (SQLException e) {
-            System.err.println("Error al buscar libros por título: " + e.getMessage());
+            logger.severe("Error al buscar libros por título: " + e.getMessage());
         }
 
         return books;
+    }
+
+    /**
+     * Busca libros por autor.
+     *
+     * @param author Nombre del autor.
+     * @return Lista de libros del autor.
+     */
+    public List<Book> getBooksByAuthor(String author) {
+        List<Book> books = new ArrayList<>();
+
+        try (Connection connection = DBManager.initConnection();
+                PreparedStatement stmt = connection.prepareStatement(SQL_SEARCH_BOOK_BY_AUTHOR)) {
+
+            stmt.setString(1, author);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    books.add(mapResultSetToBook(rs));
+                }
+            }
+        } catch (SQLException e) {
+            logger.severe("Error al buscar libros por autor: " + e.getMessage());
+        }
+
+        return books;
+    }
+
+    // Métodos auxiliares
+
+    /**
+     * Convierte un ResultSet en un objeto Book.
+     *
+     * @param rs ResultSet con los datos del libro.
+     * @return Objeto Book.
+     * @throws SQLException Si ocurre un error al leer el ResultSet.
+     */
+    private Book mapResultSetToBook(ResultSet rs) throws SQLException {
+        return new Book(
+                rs.getInt("id"),
+                rs.getString("title"),
+                Arrays.asList((String[]) rs.getArray("author").getArray()),
+                rs.getString("description"),
+                rs.getLong("isbn"),
+                Arrays.asList((String[]) rs.getArray("genre").getArray()),
+                rs.getInt("pages"),
+                rs.getInt("year"),
+                rs.getString("publisher"));
+    }
+
+    /**
+     * Crea un arreglo SQL a partir de una lista de cadenas.
+     *
+     * @param connection Conexión a la base de datos.
+     * @param list       Lista de cadenas.
+     * @return Objeto Array para usar en consultas SQL.
+     * @throws SQLException Si ocurre un error al crear el arreglo.
+     */
+    private Array createSqlArray(Connection connection, List<String> list) throws SQLException {
+        return list != null ? connection.createArrayOf("text", list.toArray()) : null;
+    }
+
+    /**
+     * Establece los parámetros de un PreparedStatement para un objeto Book.
+     *
+     * @param stmt PreparedStatement.
+     * @param book Objeto Book.
+     * @throws SQLException Si ocurre un error al establecer los parámetros.
+     */
+    private void setBookParameters(PreparedStatement stmt, Book book) throws SQLException {
+        stmt.setString(1, book.getTitle());
+        stmt.setArray(2, createSqlArray(stmt.getConnection(), book.getAuthor()));
+        stmt.setString(3, book.getDescription());
+        stmt.setLong(4, book.getIsbn());
+        stmt.setArray(5, createSqlArray(stmt.getConnection(), book.getGenre()));
+        stmt.setInt(6, book.getPages());
+        stmt.setString(7, book.getPublisher());
+        stmt.setInt(8, book.getYear());
     }
 }

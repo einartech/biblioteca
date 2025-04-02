@@ -1,6 +1,5 @@
 package com.biblioteca.controller;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.biblioteca.model.Book;
@@ -9,47 +8,74 @@ import com.biblioteca.model.BookDAO;
 public class BookController {
     private final BookDAO bookDAO;
 
-    // Constructor sin parámetros
+    // Constructor
     public BookController() {
-        this.bookDAO = new BookDAO(); // Inicializa BookDAO
+        this.bookDAO = new BookDAO();
     }
 
-    // Método para crear un libro
+    /**
+     * Crea un nuevo libro en la base de datos.
+     *
+     * @param book Objeto Book con los datos del libro.
+     */
     public void createBook(Book book) {
         bookDAO.createBook(book);
     }
 
-    // Método para eliminar un libro por ISBN
-    public void deleteBook(int id) {
-        bookDAO.deleteBook(id);
+    /**
+     * Elimina un libro por su ID.
+     *
+     * @param id ID del libro a eliminar.
+     */
+    public boolean deleteBook(int id) {
+        return bookDAO.deleteBook(id);
     }
 
-    public void updateBook(Book book) {
-        bookDAO.updateBook(book);
+    /**
+     * Actualiza los datos de un libro existente.
+     *
+     * @param book Objeto Book con los datos actualizados.
+     */
+    public boolean updateBook(Book book) {
+        return bookDAO.updateBook(book);
     }
 
-    // Método para ver todos los libros
-    public void getAllBooks() {
-        bookDAO.getAllBooks();
+    /**
+     * Obtiene todos los libros de la base de datos.
+     *
+     * @return Lista de libros.
+     */
+    public List<Book> getAllBooks() {
+        return bookDAO.getAllBooks();
     }
 
-    public void getBooksByGenre(String genre) {
-        bookDAO.getBooksByGenre(genre);
+    /**
+     * Obtiene libros por género.
+     *
+     * @param genre Género literario.
+     * @return Lista de libros que coinciden con el género.
+     */
+    public List<Book> getBooksByGenre(String genre) {
+        return bookDAO.getBooksByGenre(genre);
     }
 
-    // Método para buscar por titulo
+    /**
+     * Busca libros por título.
+     *
+     * @param title Título o parte del título del libro.
+     * @return Lista de libros que coinciden con el título.
+     */
     public List<Book> searchBookByTitle(String title) {
         return bookDAO.searchBookByTitle(title);
     }
 
-    // Método para ver un libro por autor
-    public void getBookByAuthor(String author, Book book) {
-        var books = bookDAO.getBookByAuthor(Collections.singletonList(author)); // Obtén la lista de libros
-        if (books.isEmpty()) {
-            System.out.println("No se encontraron libros para el autor: " + author);
-        } else {
-            System.out.println("Libros del autor " + author + ":");
-            books.forEach(b -> System.out.println(b)); // Imprime cada libro
-        }
+    /**
+     * Obtiene libros por autor.
+     *
+     * @param author Nombre del autor.
+     * @return Lista de libros del autor.
+     */
+    public List<Book> getBooksByAuthor(String author) {
+        return bookDAO.getBooksByAuthor(author);
     }
 }

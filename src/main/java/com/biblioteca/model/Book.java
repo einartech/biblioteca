@@ -2,7 +2,11 @@ package com.biblioteca.model;
 
 import java.util.List;
 
+/**
+ * Clase que representa un libro en la biblioteca.
+ */
 public class Book {
+    // Atributos
     private int id;
     private String title;
     private List<String> author;
@@ -17,22 +21,9 @@ public class Book {
     public Book() {
     }
 
-    // Constructor
-    public Book(String title, List<String> author, String description, long isbn, List<String> genre, int pages,
+    // Constructor completo
+    public Book(int id, String title, List<String> author, String description, long isbn, List<String> genre, int pages,
             int year, String publisher) {
-        this.title = title;
-        this.author = author;
-        this.description = description;
-        this.isbn = isbn;
-        this.genre = genre;
-        this.pages = pages;
-        this.year = year;
-        this.publisher = publisher;
-    }
-
-    public Book(int id, String title, List<String> author, String description,
-            long isbn, List<String> genre,
-            String publisher, int pages) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -44,9 +35,9 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public Book(String title, List<String> author, String description,
-            long isbn, List<String> genre,
-            String publisher, int pages) {
+    // Constructor sin ID (para nuevos libros)
+    public Book(String title, List<String> author, String description, long isbn, List<String> genre, int pages,
+            int year, String publisher) {
         this.title = title;
         this.author = author;
         this.description = description;
@@ -95,6 +86,9 @@ public class Book {
     }
 
     public void setIsbn(long isbn) {
+        if (isbn <= 0) {
+            throw new IllegalArgumentException("El ISBN debe ser un número positivo.");
+        }
         this.isbn = isbn;
     }
 
@@ -111,11 +105,10 @@ public class Book {
     }
 
     public void setPages(int pages) {
+        if (pages < 0) {
+            throw new IllegalArgumentException("El número de páginas no puede ser negativo.");
+        }
         this.pages = pages;
-    }
-
-    public String toString() {
-        return this.title;
     }
 
     public int getYear() {
@@ -132,5 +125,20 @@ public class Book {
 
     public void setPublisher(String publisher) {
         this.publisher = publisher;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author=" + author +
+                ", description='" + description + '\'' +
+                ", isbn=" + isbn +
+                ", genre=" + genre +
+                ", pages=" + pages +
+                ", year=" + year +
+                ", publisher='" + publisher + '\'' +
+                '}';
     }
 }
