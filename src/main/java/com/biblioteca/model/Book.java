@@ -10,20 +10,22 @@ public class Book {
     private long isbn;
     private List<String> genre;
     private int pages;
+
     private String publisher;
-    private int year;
+    Constructor sin parámetros
+    public Book() {
+    }
 
 
     // Constructor
-    public Book(String title, List<String> author, String description, long isbn, List<String> genre, int pages, String publisher, int year) {
+    public Book(String title, List<String> author, String description, long isbn, List<String> gender, int pages) {
         this.title = title;
         this.author = author;
         this.description = description;
         this.isbn = isbn;
         this.genre = genre;
         this.pages = pages;
-        this.publisher = publisher;
-        this.year = year;
+        // this.year = year;
     }
 
     public Book(int id, String title, List<String> author, String description, long isbn, List<String> genre, String publisher, int pages) {
@@ -34,8 +36,7 @@ public class Book {
         this.isbn = isbn;
         this.genre = genre;
         this.pages = pages;
-        this.publisher = publisher;
-        this.year = year;
+        // this.year = year;
     }
 
     // Getters y setters
@@ -96,22 +97,14 @@ public class Book {
     }
 
     public String toString() {
-        return this.title; 
-    }
-    
-    public String getPublisher() {
-        return publisher;
+        return this.title;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
+    // public int getYear() {
+    // return year;
+    // }
 
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
+    // public void setYear(int year) {
+    // this.year = year;
+    // }
 }

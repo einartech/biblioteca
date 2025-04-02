@@ -1,6 +1,7 @@
 package com.biblioteca.controller;
 
 import java.util.Collections;
+import java.util.List;
 
 import com.biblioteca.model.Book;
 import com.biblioteca.model.BookDAO;
@@ -34,6 +35,11 @@ public class BookController {
 
     public void getBooksByGenre(String genre) {
         bookDAO.getBooksByGenre(genre);
+    }
+
+    // Método para buscar por titulo
+    public List<Book> searchBookByTitle(String title) {
+        return bookDAO.searchBookByTitle(title);
     }
 
     // Método para ver un libro por autor
