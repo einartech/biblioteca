@@ -95,11 +95,18 @@ public class BookView {
         System.out.print("Nuevo título: ");
         String title = scanner.nextLine();
 
+        System.out.print("Nuevos autores (separados por comas): ");
+        String[] authors = scanner.nextLine().split(",");
+
         System.out.print("Nueva descripción: ");
         String description = scanner.nextLine();
 
         System.out.print("Nuevo ISBN: ");
         long isbn = scanner.nextLong();
+        scanner.nextLine(); // Limpiar el buffer
+
+        System.out.print("Nuevos géneros (separados por comas): ");
+        String[] genres = scanner.nextLine().split(",");
 
         System.out.print("Nuevo número de páginas: ");
         int pages = scanner.nextInt();
@@ -111,16 +118,12 @@ public class BookView {
         System.out.print("Nuevo año de publicación: ");
         int year = scanner.nextInt();
 
+        // Convertir autores y géneros a listas
+        List<String> authorList = Arrays.asList(authors);
+        List<String> genreList = Arrays.asList(genres);
+
         // Crear un objeto Book con los datos actualizados
-        Book book = new Book(
-                title,
-                null, // Autores no se actualizan en este caso
-                description,
-                isbn,
-                null, // Géneros no se actualizan en este caso
-                pages,
-                year,
-                publisher);
+        Book book = new Book(title, authorList, description, isbn, genreList, pages, year, publisher);
         book.setId(id); // Establecer el ID del libro
 
         // Llamar al controlador para actualizar el libro

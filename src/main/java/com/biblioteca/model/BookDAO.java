@@ -46,7 +46,7 @@ public class BookDAO {
                 PreparedStatement stmn = connection.prepareStatement(sql)) {
 
             if (id <= 0) {
-                System.err.println("El ISBN proporcionado no es válido.");
+                System.err.println("El id proporcionado no es válido.");
                 return;
             }
 
