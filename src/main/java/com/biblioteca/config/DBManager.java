@@ -14,16 +14,24 @@ public class DBManager {
     private static final String USER = dotenv.get("DB_USER");
     private static final String PASS = dotenv.get("DB_PASS");
 
+    // Códigos ANSI para colores
+    private static final String ANSI_YELLOW = "\u001B[33m"; // Amarillo para INFO
+    private static final String ANSI_RED = "\u001B[31m"; // Rojo para SEVERE
+    private static final String ANSI_RESET = "\u001B[0m"; // Reset para volver al color predeterminado
+
     static {
         try {
             Class.forName("org.postgresql.Driver");
+            logInfo("Controlador JDBC cargado correctamente.");
         } catch (ClassNotFoundException e) {
+            logSevere("No se encontró el controlador JDBC: " + e.getMessage());
             throw new RuntimeException("No se encontró el controlador JDBC: " + e.getMessage());
         }
     }
 
     private static void validateEnvVariables() {
         if (URL == null || USER == null || PASS == null) {
+            logSevere("Las variables de entorno DB_URL, DB_USER o DB_PASS no están configuradas.");
             throw new IllegalStateException(
                     "Las variables de entorno DB_URL, DB_USER o DB_PASS no están configuradas.");
         }
@@ -33,10 +41,10 @@ public class DBManager {
         validateEnvVariables();
         try {
             Connection connection = DriverManager.getConnection(URL, USER, PASS);
-            logger.info("¡Conexión exitosa a la base de datos!");
+            logInfo("¡Conexión exitosa a la base de datos!");
             return connection;
         } catch (SQLException e) {
-            logger.severe("Error al conectar a la base de datos: " + e.getMessage());
+            logSevere("Error al conectar a la base de datos: " + e.getMessage());
             return null;
         }
     }
@@ -45,10 +53,19 @@ public class DBManager {
         if (connection != null) {
             try {
                 connection.close();
-                logger.info("Conexión cerrada correctamente.");
+                logInfo("Conexión cerrada correctamente.");
             } catch (SQLException e) {
-                logger.severe("Error al cerrar la conexión: " + e.getMessage());
+                logSevere("Error al cerrar la conexión: " + e.getMessage());
             }
         }
+    }
+
+    // Métodos auxiliares para imprimir mensajes con colores
+    private static void logInfo(String message) {
+        logger.info(ANSI_YELLOW + message + ANSI_RESET);
+    }
+
+    private static void logSevere(String message) {
+        logger.severe(ANSI_RED + message + ANSI_RESET);
     }
 }
