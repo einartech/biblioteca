@@ -1,24 +1,22 @@
 package com.biblioteca.model;
 
-import java.sql.Array;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import com.biblioteca.config.DBManager;
+import com.biblioteca.utils.LoggerConfig;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.biblioteca.config.DBManager;
-
 public class BookDAO {
-    private static final Logger logger = Logger.getLogger(BookDAO.class.getName());
+    // Configurar el logger para esta clase con un archivo de logs específico
+    private static final Logger logger = LoggerConfig.getLogger(BookDAO.class.getName(), "logs/bookdao.log");
 
     // Consultas SQL como constantes
     private static final String SQL_INSERT_BOOK = "INSERT INTO books (title, author, description, isbn, genre, pages, publisher, year) VALUES (?,?,?,?,?,?,?,?)";
     private static final String SQL_DELETE_BOOK = "DELETE FROM books WHERE id = ?";
-    private static final String SQL_UPDATE_BOOK = "UPDATE books SET title = ?, author = ?, description = ?, isbn = ?, genre = ?, pages = ?, publisher = ?, year = ? WHERE id = ?";
+    private static final String SQL_UPDATE_BOOK = "UPDATE books SET title = ?, author = ?, description = ?, isbn = ?, genre = ?, pages, publisher, year = ? WHERE id = ?";
     private static final String SQL_SELECT_ALL_BOOKS = "SELECT * FROM books";
     private static final String SQL_SELECT_BOOKS_BY_GENRE = "SELECT * FROM books WHERE ? = ANY (genre)";
     private static final String SQL_SEARCH_BOOK_BY_TITLE = "SELECT * FROM books WHERE LOWER(title) LIKE LOWER(?)";
@@ -35,7 +33,7 @@ public class BookDAO {
 
             setBookParameters(stmn, book);
             stmn.executeUpdate();
-            logger.info("Libro insertado correctamente.");
+            logger.info("Libro insertado correctamente: " + book.getTitle());
         } catch (SQLException e) {
             logger.severe("Error al insertar el libro: " + e.getMessage());
         }
@@ -60,10 +58,10 @@ public class BookDAO {
             int rowsAffected = stmn.executeUpdate();
 
             if (rowsAffected > 0) {
-                logger.info("Libro eliminado correctamente.");
+                logger.info("Libro eliminado correctamente con ID: " + id);
                 return true;
             } else {
-                logger.warning("No se encontró un libro con el id proporcionado.");
+                logger.warning("No se encontró un libro con el id proporcionado: " + id);
                 return false;
             }
         } catch (SQLException e) {
@@ -87,10 +85,10 @@ public class BookDAO {
             int rowsAffected = stmt.executeUpdate();
 
             if (rowsAffected > 0) {
-                logger.info("El libro ha sido actualizado correctamente.");
+                logger.info("El libro ha sido actualizado correctamente: " + book.getTitle());
                 return true;
             } else {
-                logger.warning("No se encontró un libro con el ID proporcionado.");
+                logger.warning("No se encontró un libro con el ID proporcionado: " + book.getId());
                 return false;
             }
         } catch (SQLException e) {
@@ -114,6 +112,7 @@ public class BookDAO {
             while (rs.next()) {
                 books.add(mapResultSetToBook(rs));
             }
+            logger.info("Se obtuvieron " + books.size() + " libros de la base de datos.");
         } catch (SQLException e) {
             logger.severe("Error al obtener los libros: " + e.getMessage());
         }
@@ -139,6 +138,7 @@ public class BookDAO {
                     books.add(mapResultSetToBook(rs));
                 }
             }
+            logger.info("Se obtuvieron " + books.size() + " libros del género: " + genre);
         } catch (SQLException e) {
             logger.severe("Error al obtener los libros por género: " + e.getMessage());
         }
@@ -164,6 +164,7 @@ public class BookDAO {
                     books.add(mapResultSetToBook(rs));
                 }
             }
+            logger.info("Se encontraron " + books.size() + " libros con el título: " + title);
         } catch (SQLException e) {
             logger.severe("Error al buscar libros por título: " + e.getMessage());
         }
@@ -189,6 +190,7 @@ public class BookDAO {
                     books.add(mapResultSetToBook(rs));
                 }
             }
+            logger.info("Se encontraron " + books.size() + " libros del autor: " + author);
         } catch (SQLException e) {
             logger.severe("Error al buscar libros por autor: " + e.getMessage());
         }

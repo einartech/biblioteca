@@ -3,11 +3,14 @@ package com.biblioteca.view;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import com.biblioteca.controller.BookController;
 import com.biblioteca.model.Book;
+import com.biblioteca.utils.LoggerConfig;
 
 public class BookView {
+    private static final Logger logger = LoggerConfig.getLogger(BookView.class.getName(), "logs/bookview.log");
     private final BookController bookController;
 
     public BookView(BookController bookController) {
@@ -59,8 +62,10 @@ public class BookView {
 
             // Enviar el libro al controlador
             bookController.createBook(book);
-
+            logger.info("Libro creado: " + title);
             System.out.println("El libro ha sido añadido correctamente.");
+        } catch (Exception e) {
+            logger.severe("Error al crear el libro: " + e.getMessage());
         } finally {
             scanner.close(); // Cerrar el escáner
         }
@@ -76,6 +81,7 @@ public class BookView {
 
             if (!scanner.hasNextInt()) {
                 System.out.println("El ID ingresado no es válido. Intente nuevamente.");
+                logger.warning("Intento de eliminar un libro con un ID no válido.");
                 return;
             }
 
@@ -85,10 +91,14 @@ public class BookView {
             boolean success = bookController.deleteBook(id);
 
             if (success) {
+                logger.info("Libro eliminado con ID: " + id);
                 System.out.println("El libro ha sido eliminado correctamente.");
             } else {
+                logger.warning("No se encontró un libro con el ID proporcionado: " + id);
                 System.out.println("No se encontró un libro con el ID proporcionado.");
             }
+        } catch (Exception e) {
+            logger.severe("Error al eliminar el libro: " + e.getMessage());
         } finally {
             scanner.close(); // Cerrar el escáner
         }
@@ -138,10 +148,14 @@ public class BookView {
             // Llamar al controlador para actualizar el libro
             boolean success = bookController.updateBook(book);
             if (success) {
+                logger.info("Libro actualizado con ID: " + id);
                 System.out.println("El libro ha sido actualizado correctamente.");
             } else {
+                logger.warning("No se encontró un libro con el ID proporcionado: " + id);
                 System.out.println("No se encontró un libro con el ID proporcionado.");
             }
+        } catch (Exception e) {
+            logger.severe("Error al actualizar el libro: " + e.getMessage());
         } finally {
             scanner.close(); // Cerrar el escáner
         }
@@ -154,6 +168,7 @@ public class BookView {
      */
     private void printBooksTable(List<Book> books) {
         if (books.isEmpty()) {
+            logger.info("No se encontraron libros para mostrar.");
             System.out.println("No se encontraron libros.");
             return;
         }
@@ -180,6 +195,7 @@ public class BookView {
                     book.getYear(),
                     book.getPublisher());
         }
+        logger.info("Se imprimieron " + books.size() + " libros.");
     }
 
     public void getAllBooks() {

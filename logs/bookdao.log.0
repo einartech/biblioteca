@@ -1,0 +1,16 @@
+abr 02, 2025 4:35:11 P. M. com.biblioteca.model.BookDAO getAllBooks
+INFO: Se obtuvieron 19 libros de la base de datos.
+abr 02, 2025 4:36:10 P. M. com.biblioteca.model.BookDAO createBook
+INFO: Libro insertado correctamente: einarrr
+abr 02, 2025 4:37:51 P. M. com.biblioteca.model.BookDAO searchBookByTitle
+INFO: Se encontraron 1 libros con el título: anillos
+abr 02, 2025 4:38:30 P. M. com.biblioteca.model.BookDAO getBooksByGenre
+INFO: Se obtuvieron 0 libros del género: terror
+abr 02, 2025 4:38:59 P. M. com.biblioteca.model.BookDAO getBooksByGenre
+INFO: Se obtuvieron 3 libros del género: Drama
+abr 02, 2025 4:42:53 P. M. com.biblioteca.model.BookDAO getAllBooks
+INFO: Se obtuvieron 20 libros de la base de datos.
+abr 02, 2025 4:44:33 P. M. com.biblioteca.model.BookDAO getAllBooks
+INFO: Se obtuvieron 20 libros de la base de datos.
+abr 02, 2025 4:45:06 P. M. com.biblioteca.model.BookDAO getAllBooks
+INFO: Se obtuvieron 20 libros de la base de datos.

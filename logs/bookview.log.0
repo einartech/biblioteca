@@ -1,0 +1,8 @@
+abr 02, 2025 4:36:11 P. M. com.biblioteca.view.BookView createBook
+INFO: Libro creado: einarrr
+abr 02, 2025 4:42:53 P. M. com.biblioteca.view.BookView printBooksTable
+INFO: Se imprimieron 20 libros.
+abr 02, 2025 4:44:33 P. M. com.biblioteca.view.BookView printBooksTable
+INFO: Se imprimieron 20 libros.
+abr 02, 2025 4:45:06 P. M. com.biblioteca.view.BookView printBooksTable
+INFO: Se imprimieron 20 libros.

@@ -1,10 +1,8 @@
 package com.biblioteca;
 
-import java.util.List;
 import java.util.Scanner;
 
 import com.biblioteca.controller.BookController;
-import com.biblioteca.model.Book;
 import com.biblioteca.view.BookView;
 
 public class App {
@@ -76,40 +74,5 @@ public class App {
         }
 
         scanner.close(); // Cerrar el scanner
-    }
-
-    /**
-     * Imprime una lista de libros en un formato tabular limpio y ordenado.
-     *
-     * @param books Lista de libros a imprimir.
-     */
-    private void printBooksTable(List<Book> books) {
-        if (books.isEmpty()) {
-            System.out.println("No se encontraron libros.");
-            return;
-        }
-
-        // Código ANSI para el color lila
-        final String ANSI_PURPLE = "\u001B[35m";
-        final String ANSI_RESET = "\u001B[0m";
-
-        // Imprimir encabezados en color lila
-        System.out.printf(ANSI_PURPLE + "%-5s %-60s %-20s %-15s %-20s %-10s %-10s %-15s%n" + ANSI_RESET,
-                "ID", "Título", "Autor(es)", "ISBN", "Género(s)", "Páginas", "Año", "Editorial");
-        System.out.println(
-                "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-
-        // Imprimir cada libro en formato tabular
-        for (Book book : books) {
-            System.out.printf("%-5d %-60s %-20s %-15d %-20s %-10d %-10d %-15s%n",
-                    book.getId(),
-                    book.getTitle(),
-                    String.join(", ", book.getAuthor()),
-                    book.getIsbn(),
-                    String.join(", ", book.getGenre()),
-                    book.getPages(),
-                    book.getYear(),
-                    book.getPublisher());
-        }
     }
 }
