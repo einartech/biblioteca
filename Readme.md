@@ -1,94 +1,207 @@
-# 📚 Tabla `books` - Guía de Interacción
+# 📚 Biblioteca - Sistema de Gestión de Libros
 
-Este documento explica cómo interactuar con la tabla `books` de la base de datos. Incluye ejemplos de operaciones CRUD (Create, Read, Update, Delete) y consultas avanzadas.
-
----
-
-## **Estructura de la tabla `books`**
-
-| Campo         | Tipo           | Descripción                                                               |
-| ------------- | -------------- | ------------------------------------------------------------------------- |
-| `id`          | `integer`      | Identificador único del libro (clave primaria, generado automáticamente). |
-| `title`       | `varchar(100)` | Título del libro (obligatorio).                                           |
-| `author`      | `text[]`       | Lista de autores del libro (obligatorio).                                 |
-| `description` | `varchar(200)` | Breve descripción del libro (obligatorio).                                |
-| `isbn`        | `bigint`       | Número ISBN único del libro (obligatorio).                                |
-| `genre`       | `text[]`       | Lista de géneros literarios del libro (obligatorio).                      |
-| `pages`       | `integer`      | Número de páginas del libro (obligatorio).                                |
-| `publisher`   | `varchar(100)` | Editorial del libro (opcional).                                           |
-| `year`        | `integer`      | Año de publicación del libro (obligatorio).                               |
+Este proyecto es un sistema de gestión de libros diseñado para realizar operaciones CRUD (Crear, Leer, Actualizar y Eliminar) en una base de datos. Está construido con Java y utiliza una arquitectura modular para garantizar la escalabilidad y el mantenimiento del código.
 
 ---
 
-## **Operaciones CRUD**
+## **Índice**
 
-### **1. CREATE (Insertar registros)**
+1. [Descripción del Proyecto](#descripción-del-proyecto)
+2. [Características Principales](#características-principales)
+3. [Arquitectura del Proyecto](#arquitectura-del-proyecto)
+4. [Requisitos Previos](#requisitos-previos)
+5. [Instalación](#instalación)
+6. [Uso del Proyecto](#uso-del-proyecto)
+7. [Ejemplos de Código](#ejemplos-de-código)
+8. [Herramientas Utilizadas](#herramientas-utilizadas)
+9. [Equipo de Desarrollo](#equipo-de-desarrollo)
+10. [Contribuciones](#contribuciones)
 
-Para agregar un nuevo libro a la tabla, utiliza la instrucción `INSERT INTO`:
+---
 
-```sql
-INSERT INTO public.books (title, author, description, isbn, genre, pages, publisher, year)
-VALUES
-('El Principito', ARRAY['Antoine de Saint-Exupéry'], 'Un clásico de la literatura infantil', 9781234567890, ARRAY['Ficción', 'Infantil'], 96, 'Reynal & Hitchcock', 1943);
+## **Descripción del Proyecto**
+
+El sistema de biblioteca permite gestionar libros almacenados en una base de datos PostgreSQL. Los usuarios pueden realizar operaciones como agregar nuevos libros, buscar libros por título, género o autor, actualizar información de libros existentes y eliminarlos. Además, el sistema registra logs detallados para cada operación, lo que facilita el monitoreo y la depuración.
+
+---
+
+## **Características Principales**
+
+- **Gestión de Libros:**
+  - Crear, leer, actualizar y eliminar libros.
+  - Búsqueda avanzada por título, género o autor.
+- **Logs Detallados:**
+  - Cada operación se registra en archivos de logs específicos para facilitar el monitoreo.
+- **Interfaz de Consola:**
+  - Interacción sencilla a través de un menú en la terminal.
+- **Arquitectura Modular:**
+  - Separación clara de responsabilidades entre controladores, vistas, modelos y configuración.
+
+---
+
+## **Arquitectura del Proyecto**
+
+El proyecto sigue una arquitectura modular basada en el patrón **MVC (Modelo-Vista-Controlador)**:
+
+1. **Modelo (`BookDAO`, `DBManager`):**
+
+   - Gestiona la interacción con la base de datos.
+   - Realiza operaciones CRUD en la tabla `books`.
+
+2. **Vista (`BookView`):**
+
+   - Proporciona una interfaz de usuario en la terminal.
+   - Recoge datos del usuario y muestra resultados.
+
+3. **Controlador (`BookController`):**
+
+   - Actúa como intermediario entre la vista y el modelo.
+   - Contiene la lógica de negocio.
+
+4. **Configuración (`LoggerConfig`, `.env`):**
+   - Maneja la configuración de logs y variables de entorno.
+
+---
+
+## **Requisitos Previos**
+
+Antes de instalar el proyecto, asegúrate de tener lo siguiente:
+
+- **Java 17** o superior.
+- **PostgreSQL** instalado y configurado.
+- **Maven** para gestionar dependencias.
+- **Archivo `.env`** con las siguientes variables:
+  ```plaintext
+  DB_URL=jdbc:postgresql://localhost:5432/biblioteca
+  DB_USER=tu_usuario
+  DB_PASS=tu_contraseña
+  ```
+
+---
+
+## **Instalación**
+
+Sigue estos pasos para instalar y ejecutar el proyecto:
+
+1. **Clona el repositorio:**
+
+   ```bash
+   git clone https://github.com/tu_usuario/biblioteca.git
+   cd biblioteca
+   ```
+
+2. **Configura el archivo `.env`:**
+
+   - Crea un archivo `.env` en la raíz del proyecto con las variables de conexión a la base de datos.
+
+3. **Instala las dependencias:**
+
+   ```bash
+   mvn install
+   ```
+
+4. **Ejecuta el proyecto:**
+   ```bash
+   mvn exec:java -Dexec.mainClass="com.biblioteca.App"
+   ```
+
+---
+
+## **Uso del Proyecto**
+
+Al ejecutar el proyecto, se mostrará un menú en la terminal con las siguientes opciones:
+
+1. Ver todos los libros.
+2. Crear un nuevo libro.
+3. Actualizar un libro existente.
+4. Eliminar un libro.
+5. Buscar libros por título.
+6. Buscar libros por autor.
+7. Buscar libros por género.
+
+Selecciona una opción ingresando el número correspondiente.
+
+---
+
+## **Ejemplos de Código**
+
+### **1. Crear un Libro**
+
+```java
+Book book = new Book(
+    "El Principito",
+    Arrays.asList("Antoine de Saint-Exupéry"),
+    "Un clásico de la literatura infantil",
+    9781234567890L,
+    Arrays.asList("Ficción", "Infantil"),
+    96,
+    1943,
+    "Reynal & Hitchcock"
+);
+bookController.createBook(book);
 ```
 
-### **2. READ (Consultar registros)**
+### **2. Buscar Libros por Título**
 
-Consulta para obtener todos los registros de la tabla, utiliza la instrucción `SELECT * FROM`:
-
-```sql
-SELECT * FROM books;
+```java
+List<Book> books = bookController.searchBookByTitle("Principito");
+books.forEach(System.out::println);
 ```
 
-### **2.b. Obtener un libro por ID**
+### **3. Actualizar un Libro**
 
-Consulta para obtener un libro específico utilizando su id, utiliza la instrucción `SELECT * FROM & WHERE`:
-
-```sql
-SELECT * FROM public.books WHERE id = 2;
+```java
+Book book = new Book(
+    "El Principito (Edición Especial)",
+    Arrays.asList("Antoine de Saint-Exupéry"),
+    "Una edición especial del clásico",
+    9781234567890L,
+    Arrays.asList("Ficción", "Infantil"),
+    100,
+    1943,
+    "Reynal & Hitchcock"
+);
+book.setId(1); // ID del libro a actualizar
+bookController.updateBook(book);
 ```
 
-### **2.c. Buscar libros por título**
+---
 
-Consulta para buscar libros cuyo título contenga una palabra específica, utiliza la instrucción `SELECT * FROM & WHERE & ILIKE`:
+## **Herramientas Utilizadas**
 
-```sql
-SELECT * FROM books WHERE title ILIKE '%principito%';
-```
+- **Java 17:** Lenguaje principal del proyecto.
+- **PostgreSQL:** Base de datos relacional para almacenar los libros.
+- **Maven:** Gestión de dependencias y construcción del proyecto.
+- **dotenv-java:** Manejo de variables de entorno.
+- **Java Logging API:** Registro de logs en archivos y consola.
 
-### **2.d. Buscar libros por género**
+---
 
-Consulta para buscar libros que pertenezcan a un género específico, utiliza la instrucción `SELECT * FROM & WHERE & ANY`:
+## **Equipo de Desarrollo**
 
-```sql
-SELECT * FROM books WHERE 'Ficción' = ANY (genre);
-```
+- **Nombre del Desarrollador 1:** Rol (e.g., Backend Developer)
+- **Nombre del Desarrollador 2:** Rol (e.g., Database Specialist)
+- **Nombre del Desarrollador 3:** Rol (e.g., QA Engineer)
 
-### **2.e. Buscar libros por autor**
+---
 
-Consulta para buscar libros escritos por un autor específico, utiliza la instrucción `SELECT * FROM & WHERE & ANY`:
+## **Contribuciones**
 
-```sql
-SELECT * FROM books  WHERE 'Antoine de Saint-Exupéry' = ANY (author);
-```
+¡Las contribuciones son bienvenidas! Si deseas contribuir:
 
-### **3. UPDATE (Actualizar registros)**
+1. Haz un fork del repositorio.
+2. Crea una rama para tu funcionalidad o corrección:
+   ```bash
+   git checkout -b mi-nueva-funcionalidad
+   ```
+3. Realiza tus cambios y haz un commit:
+   ```bash
+   git commit -m "Agregué una nueva funcionalidad"
+   ```
+4. Envía un pull request.
 
-Para actualizar la información de un libro, utiliza la instrucción `UPDATE & SET & WHERE`:
+---
 
-```sql
-UPDATE public.books
-SET
-    title = 'El Principito (Edición Especial)',
-    description = 'Una edición especial del clásico de la literatura infantil',
-    pages = 100
-WHERE id = 1;
-```
+## **Licencia**
 
-### **4. DELETE (Eliminar registros)**
-
-Para eliminar un libro de la tabla, utiliza la instrucción: `DELETE FROM & WHERE`:
-
-```sql
-DELETE FROM public.books WHERE id = 1;
-```
+Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.

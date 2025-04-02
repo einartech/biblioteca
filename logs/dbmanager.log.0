@@ -30,3 +30,11 @@ abr 02, 2025 4:45:05 P. M. com.biblioteca.config.DBManager logInfo
 INFO: [33mControlador JDBC cargado correctamente.[0m
 abr 02, 2025 4:45:06 P. M. com.biblioteca.config.DBManager logInfo
 INFO: [33m¡Conexión exitosa a la base de datos![0m
+abr 02, 2025 5:02:42 P. M. com.biblioteca.config.DBManager logInfo
+INFO: [33mControlador JDBC cargado correctamente.[0m
+abr 02, 2025 5:02:43 P. M. com.biblioteca.config.DBManager logInfo
+INFO: [33m¡Conexión exitosa a la base de datos![0m
+abr 02, 2025 5:03:08 P. M. com.biblioteca.config.DBManager logInfo
+INFO: [33mControlador JDBC cargado correctamente.[0m
+abr 02, 2025 5:03:09 P. M. com.biblioteca.config.DBManager logInfo
+INFO: [33m¡Conexión exitosa a la base de datos![0m
