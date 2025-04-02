@@ -15,7 +15,7 @@ public class BookDAO {
 
     // Método para crear un libro
     public void createBook(Book book) {
-        String sql = "INSERT INTO books (title, author, description, isbn, gender, pages) VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO books (title, author, description, isbn, genre, pages, publisher, year) VALUES (?,?,?,?,?,?)";
 
         try (Connection connection = DBManager.initConnection();
                 PreparedStatement stmn = connection.prepareStatement(sql)) {
@@ -25,10 +25,11 @@ public class BookDAO {
             stmn.setArray(2, authorArray);
             stmn.setString(3, book.getDescription());
             stmn.setLong(4, book.getIsbn());
-            Array genderArray = connection.createArrayOf("text", book.getGender().toArray());
-            stmn.setArray(5, genderArray);
+            Array genreArray = connection.createArrayOf("text", book.getGenre().toArray());
+            stmn.setArray(5, genreArray);
+            stmn.setString(7, book.getPublisher());
             stmn.setInt(6, book.getPages());
-            // stmn.setInt(7, book.getYear());
+            stmn.setInt(7, book.getYear());
 
             stmn.executeUpdate();
             System.out.println("Libro insertado correctamente.");
@@ -64,16 +65,18 @@ public class BookDAO {
 
     // Modificar un libro
     public void updateBook(Book book) {
-        String sql = "UPDATE books SET title = ?, description = ?, isbn = ?, pages = ? WHERE id = ?";
+        String sql = "UPDATE books SET title = ?, author = ?, description = ?, isbn = ?, pages = ?, publisher = ?, year = ? , WHERE id = ?";
 
         try (Connection connection = DBManager.initConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setString(1, book.getTitle());
-            stmt.setString(2, book.getDescription());
-            stmt.setLong(3, book.getIsbn());
-            stmt.setInt(4, book.getPages());
-            stmt.setInt(5, book.getId()); // Asegúrate de que el ID del libro esté configurado correctamente
+            stmt.setString(2, book.getAuthor());
+            stmt.setString(3, book.getDescription());
+            stmt.setLong(4, book.getIsbn());
+            stmt.setInt(5, book.getPages());
+            stmt.setInt(6, book.getYear());
+            stmt.setInt(7, book.getId()); // Asegúrate de que el ID del libro esté configurado correctamente
 
             int rowsAffected = stmt.executeUpdate();
 
@@ -100,10 +103,11 @@ public class BookDAO {
                 System.out.println("---------------------------");
                 System.out.println("Título: " + rs.getString("title"));
                 System.out.println("Autor(es): " + rs.getArray("author"));
-                System.out.println("Descripción: " + rs.getString("description"));
                 System.out.println("ISBN: " + rs.getLong("isbn"));
-                System.out.println("Género(s): " + rs.getArray("gender"));
+                System.out.println("Género(s): " + rs.getArray("genre"));
                 System.out.println("Páginas: " + rs.getInt("pages"));
+                System.out.println("Editorial: " + rs.getString("editorial"));
+                System.out.println("Año : " + rs.getInt("año"));
                 System.out.println("---------------------------");
             }
         } catch (SQLException e) {
@@ -113,7 +117,7 @@ public class BookDAO {
 
     // Metodo para filtrar los libros por su género
     public void getBooksByGenre(String genre) {
-        String sql = "SELECT id, title, author, description, isbn, pages FROM books WHERE ? = ANY (gender)";
+        String sql = "SELECT id, title, author, isbn, pages, publisher, year FROM books WHERE ? = ANY (genre)";
 
         try (Connection connection = DBManager.initConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -126,16 +130,18 @@ public class BookDAO {
                 int id = rs.getInt("id");
                 String title = rs.getString("title");
                 String author = rs.getString("author");
-                String description = rs.getString("description");
                 long isbn = rs.getLong("isbn");
                 int pages = rs.getInt("pages");
+                String publisher = rs.getString("publisher");
+                int year = rs.getInt("year");
 
                 System.out.println("ID: " + id);
                 System.out.println("Título: " + title);
                 System.out.println("Autor(es): " + author);
-                System.out.println("Descripción: " + description);
                 System.out.println("ISBN: " + isbn);
                 System.out.println("Páginas: " + pages);
+                System.out.println("Editorial: " + publisher);
+                System.out.println("Year: " + year);
                 System.out.println("-------------------------");
             }
         } catch (SQLException e) {
@@ -144,35 +150,38 @@ public class BookDAO {
     }
 
     // Método para buscar libros por autor
-    public List<Book> getBookByAuthor(List<String> authors) {
-        List<Book> books = new ArrayList<>();
-        String sql = "SELECT * FROM books WHERE author && ?::text[]";
+    public void getBookByAuthor(String author) {
+        String sql = "SELECT id, title, isbn, genre, pages, publisher, year FROM books WHERE ? = ANY (author)";
 
         try (Connection connection = DBManager.initConnection();
-                PreparedStatement stmn = connection.prepareStatement(sql)) {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
 
-            Array authorArray = connection.createArrayOf("text", authors.toArray());
-            stmn.setArray(1, authorArray);
+                stmt.setString(1, author); // Establecer el género en la consulta
+                ResultSet rs = stmt.executeQuery();
 
-            ResultSet rs = stmn.executeQuery();
-
+            System.out.println("Libros encontrados por autor '" + author + "':");
             while (rs.next()) {
-                Book book = new Book(
-                        rs.getString("title"),
-                        Arrays.asList((String[]) rs.getArray("author").getArray()),
-                        rs.getString("description"),
-                        rs.getLong("isbn"),
-                        Arrays.asList((String[]) rs.getArray("gender").getArray()),
-                        rs.getInt("pages"));
-                books.add(book);
-            }
+                int id = rs.getInt("id");
+                String title = rs.getString("title");
+                long isbn = rs.getLong("isbn");
+                Array genre = rs.getArray("genre");
+                int pages = rs.getInt("pages");
+                String publisher = rs.getString("publisher");
+                int year = rs.getInt("year");
 
-            System.out.println("Libros encontrados mediante autor correctamente.");
+                System.out.println("ID: " + id);
+                System.out.println("Título: " + title);
+                System.out.println("ISBN: " + isbn);
+                System.out.println("Género(s): " + rs.getArray("genre"));
+                System.out.println("Páginas: " + pages);
+                System.out.println("Editorial: " + publisher);
+                System.out.println("Year: " + year);
+                System.out.println("-------------------------");
+            }
         } catch (SQLException e) {
-            System.err.println("Error al buscar libros por autor: " + e.getMessage());
+            System.err.println("Error al obtener los libros: " + e.getMessage());
         }
 
-        return books;
     }
 
 }

@@ -8,31 +8,34 @@ public class Book {
     private List<String> author;
     private String description;
     private long isbn;
-    private List<String> gender;
+    private List<String> genre;
     private int pages;
-    // private int year;
+    private String publisher;
+    private int year;
+
 
     // Constructor
-    public Book(String title, List<String> author, String description, long isbn, List<String> gender, int pages) {
+    public Book(String title, List<String> author, String description, long isbn, List<String> genre, int pages, String publisher, int year) {
         this.title = title;
         this.author = author;
         this.description = description;
         this.isbn = isbn;
-        this.gender = gender;
+        this.genre = genre;
         this.pages = pages;
-        // this.year = year;
+        this.publisher = publisher;
+        this.year = year;
     }
 
-    public Book(int id, String title, List<String> author, String description, long isbn, List<String> gender,
-            int pages) {
+    public Book(int id, String title, List<String> author, String description, long isbn, List<String> genre, String publisher, int pages) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.description = description;
         this.isbn = isbn;
-        this.gender = gender;
+        this.genre = genre;
         this.pages = pages;
-        // this.year = year;
+        this.publisher = publisher;
+        this.year = year;
     }
 
     // Getters y setters
@@ -76,12 +79,12 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public List<String> getGender() {
-        return gender;
+    public List<String> getGenre() {
+        return genre;
     }
 
-    public void setGender(List<String> gender) {
-        this.gender = gender;
+    public void setGenre(List<String> genre) {
+        this.genre = genre;
     }
 
     public int getPages() {
@@ -95,12 +98,20 @@ public class Book {
     public String toString() {
         return this.title; 
     }
+    
+    public String getPublisher() {
+        return publisher;
+    }
 
-    // public int getYear() {
-    // return year;
-    // }
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
 
-    // public void setYear(int year) {
-    // this.year = year;
-    // }
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
 }
