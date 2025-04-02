@@ -1,6 +1,7 @@
 package com.biblioteca.view;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 import com.biblioteca.controller.BookController;
@@ -54,22 +55,22 @@ public class BookView {
         Scanner scanner = new Scanner(System.in);
 
         try {
-        System.out.print("Ingrese el ISBN del libro que desea eliminar: ");
-        
-        if (!scanner.hasNextLong()) {
-            System.out.println("El ISBN ingresado no es válido. Intente nuevamente.");
-            return;
-        }
+            System.out.print("Ingrese el ISBN del libro que desea eliminar: ");
 
-        long isbn = scanner.nextLong();
+            if (!scanner.hasNextLong()) {
+                System.out.println("El ISBN ingresado no es válido. Intente nuevamente.");
+                return;
+            }
 
-        // Llamar al método deleteBook del controlador
-        bookController.deleteBook(isbn);
+            long isbn = scanner.nextLong();
 
-        System.out.println("Operación de eliminación finalizada.");
+            // Llamar al método deleteBook del controlador
+            bookController.deleteBook(isbn);
+
+            System.out.println("Operación de eliminación finalizada.");
         } finally {
             scanner.close(); // Cerrar el escáner
-        }	
+        }
     }
 
     public void updateBook() {
@@ -118,6 +119,35 @@ public class BookView {
         scanner.close(); // Cerrar el escáner
 
         System.out.println("Operación de búsqueda por género finalizada.");
+    }
+
+    public void searchBookByTitle() {
+        Scanner scanner = new Scanner(System.in); // Declaración del Scanner
+
+        System.out.print("Ingrese el título o parte del título del libro a buscar: ");
+        String title = scanner.nextLine();
+
+        List<Book> books = bookController.searchBookByTitle(title);
+
+        if (books.isEmpty()) {
+            System.out.println("No se encontraron libros con ese título.");
+        } else {
+            System.out.println("Libros encontrados:");
+
+            for (Book book : books) {
+                System.out.println("---------------------------");
+
+                System.out.println("ID: " + book.getId());
+                System.out.println("Título: " + book.getTitle());
+                System.out.println("Descripción: " + book.getDescription());
+                System.out.println("ISBN: " + book.getIsbn());
+                System.out.println("Autores: " + String.join(", ", book.getAuthor()));
+                System.out.println("Géneros: " + String.join(", ", book.getGender()));
+                System.out.println("Páginas: " + book.getPages());
+                System.out.println("---------------------------");
+
+            }
+        }
     }
 
     // Método para ver un libro por autor

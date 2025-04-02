@@ -175,4 +175,41 @@ public class BookDAO {
         return books;
     }
 
+    // Método para buscar libros por título
+    // Método para buscar un libro por título
+    public List<Book> searchBookByTitle(String title) {
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM books WHERE title ILIKE ?";
+
+        try {
+            Connection connection = DBManager.initConnection();
+            PreparedStatement stmt = connection.prepareStatement(sql);
+
+            stmt.setString(1, "%" + title + "%");
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                // Convertir los arrays de la base de datos a listas de Strings
+                String[] authors = (String[]) rs.getArray("author").getArray();
+                String[] genders = (String[]) rs.getArray("gender").getArray();
+
+                Book book = new Book();
+                book.setId(rs.getInt("id"));
+                book.setTitle(rs.getString("title"));
+                book.setAuthor(Arrays.asList(authors));
+                book.setDescription(rs.getString("description"));
+                book.setIsbn(rs.getLong("isbn"));
+                book.setGender(Arrays.asList(genders));
+                book.setPages(rs.getInt("pages"));
+                // book.setYear(rs.getInt("year"));
+
+                books.add(book);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al buscar libros por título: " + e.getMessage());
+        }
+
+        return books;
+    }
 }
