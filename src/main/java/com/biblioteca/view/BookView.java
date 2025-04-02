@@ -10,7 +10,6 @@ import com.biblioteca.model.Book;
 public class BookView {
     private final BookController bookController;
 
-    // Constructor que recibe el controlador
     public BookView(BookController bookController) {
         this.bookController = bookController;
     }
@@ -149,42 +148,58 @@ public class BookView {
     }
 
     /**
-     * Muestra todos los libros.
+     * Imprime una lista de libros en un formato tabular limpio y ordenado.
+     *
+     * @param books Lista de libros a imprimir.
      */
-    public void getAllBooks() {
-        List<Book> books = bookController.getAllBooks();
+    private void printBooksTable(List<Book> books) {
         if (books.isEmpty()) {
-            System.out.println("No hay libros disponibles.");
-        } else {
-            books.forEach(System.out::println);
+            System.out.println("No se encontraron libros.");
+            return;
+        }
+
+        // Código ANSI para el color lila
+        final String ANSI_PURPLE = "\u001B[35m";
+        final String ANSI_RESET = "\u001B[0m";
+
+        // Imprimir encabezados en color lila
+        System.out.printf(ANSI_PURPLE + "%-5s %-30s %-20s %-15s %-20s %-10s %-10s %-15s%n" + ANSI_RESET,
+                "ID", "Título", "Autor(es)", "ISBN", "Género(s)", "Páginas", "Año", "Editorial");
+        System.out.println(
+                "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+        // Imprimir cada libro en formato tabular
+        for (Book book : books) {
+            System.out.printf("%-5d %-30s %-20s %-15d %-20s %-10d %-10d %-15s%n",
+                    book.getId(),
+                    book.getTitle(),
+                    String.join(", ", book.getAuthor()),
+                    book.getIsbn(),
+                    String.join(", ", book.getGenre()),
+                    book.getPages(),
+                    book.getYear(),
+                    book.getPublisher());
         }
     }
 
-    /**
-     * Muestra libros por género.
-     */
+    public void getAllBooks() {
+        List<Book> books = bookController.getAllBooks();
+        printBooksTable(books);
+    }
+
     public void getBooksByGenre() {
         Scanner scanner = new Scanner(System.in);
         try {
             System.out.print("Ingrese el género del libro: ");
             String genre = scanner.nextLine();
 
-            // Llamar al método getBooksByGenre del controlador
             List<Book> books = bookController.getBooksByGenre(genre);
-
-            if (books.isEmpty()) {
-                System.out.println("No se encontraron libros para el género: " + genre);
-            } else {
-                books.forEach(System.out::println);
-            }
+            printBooksTable(books);
         } finally {
-            scanner.close(); // Cerrar el escáner
+            scanner.close();
         }
     }
 
-    /**
-     * Busca libros por título.
-     */
     public void searchBookByTitle() {
         Scanner scanner = new Scanner(System.in);
         try {
@@ -192,35 +207,22 @@ public class BookView {
             String title = scanner.nextLine();
 
             List<Book> books = bookController.searchBookByTitle(title);
-            if (books.isEmpty()) {
-                System.out.println("No se encontraron libros con el título: " + title);
-            } else {
-                books.forEach(System.out::println);
-            }
+            printBooksTable(books);
         } finally {
-            scanner.close(); // Cerrar el escáner
+            scanner.close();
         }
     }
 
-    /**
-     * Muestra libros por autor.
-     */
     public void getBookByAuthor() {
         Scanner scanner = new Scanner(System.in);
         try {
             System.out.print("Ingrese el nombre del autor: ");
             String author = scanner.nextLine();
 
-            // Llamar al método getBooksByAuthor del controlador
             List<Book> books = bookController.getBooksByAuthor(author);
-
-            if (books.isEmpty()) {
-                System.out.println("No se encontraron libros para el autor: " + author);
-            } else {
-                books.forEach(System.out::println);
-            }
+            printBooksTable(books);
         } finally {
-            scanner.close(); // Cerrar el escáner
+            scanner.close();
         }
     }
 }
