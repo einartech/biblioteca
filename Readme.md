@@ -1,5 +1,7 @@
 # 📚 Proyecto Biblioteca
 
+![image](https://github.com/user-attachments/assets/187de02b-f7bb-458e-ab59-4db504f8a19f)
+
 ## 📌 Descripción
 Este proyecto tiene como objetivo modernizar la biblioteca del barrio mediante un sistema que permita gestionar los libros de manera eficiente. A través de una aplicación en terminal, la administradora podrá realizar operaciones CRUD sobre un inventario de libros almacenado en una base de datos PostgreSQL.
 
@@ -45,6 +47,7 @@ Biblioteca/
 2. **Configurar PostgreSQL**:
    - Crear una base de datos llamada `biblioteca_db`.
    - Configurar las credenciales en el archivo de conexión.
+   - Asegurarse de que el nombre de la db sea lo mismo cuando se conecte al código.
 3. **Compilar y ejecutar el proyecto**:
    ```sh
    mvn clean install
