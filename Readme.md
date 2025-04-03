@@ -63,11 +63,11 @@ Biblioteca/
 El desarrollo se basa en metodologías ágiles con un único sprint. Se recomienda seguir buenas prácticas de control de versiones y mantener una comunicación activa dentro del equipo.
 
 ## 📌 Autores
-- Carol Mas: PO/CODER.
-- Guadalupe Hani: SM/CODER.
-- Miriam Sánchez: CODER.
-- Priscila Guillén: CODER.
-- Einar Sánchez: CODER.
+- Carol Mas: PO/CODER. https://www.linkedin.com/in/carolina-mas/
+- Guadalupe Hani: SM/CODER. https://www.linkedin.com/in/guadalupe-hani/
+- Miriam Sánchez: CODER. https://www.linkedin.com/in/miriam-sanchez-ordo%C3%B1ez/
+- Priscila Guillén: CODER. https://www.linkedin.com/in/priscilaguillen/
+- Einar Sánchez: CODER. https://www.linkedin.com/in/einartech/
 
 ## 📜 Licencia
 Este proyecto se distribuye bajo la licencia MIT. Puedes usarlo y modificarlo libremente.
