@@ -9,17 +9,14 @@ import com.biblioteca.model.BookDAO;
 public class BookController {
     private final BookDAO bookDAO;
 
-    // Constructor sin parámetros
     public BookController() {
-        this.bookDAO = new BookDAO(); // Inicializa BookDAO
+        this.bookDAO = new BookDAO();
     }
 
-    // Método para crear un libro
     public void createBook(Book book) {
         bookDAO.createBook(book);
     }
 
-    // Método para eliminar un libro por ISBN
     public void deleteBook(int id) {
         bookDAO.deleteBook(id);
     }
@@ -28,7 +25,6 @@ public class BookController {
         bookDAO.updateBook(book);
     }
 
-    // Método para ver todos los libros
     public void getAllBooks() {
         bookDAO.getAllBooks();
     }
@@ -37,19 +33,17 @@ public class BookController {
         bookDAO.getBooksByGenre(genre);
     }
 
-    // Método para buscar por titulo
     public List<Book> searchBookByTitle(String title) {
         return bookDAO.searchBookByTitle(title);
     }
 
-    // Método para ver un libro por autor
     public void getBookByAuthor(String author, Book book) {
-        var books = bookDAO.getBookByAuthor(Collections.singletonList(author)); // Obtén la lista de libros
+        var books = bookDAO.getBookByAuthor(Collections.singletonList(author));
         if (books.isEmpty()) {
             System.out.println("No se encontraron libros para el autor: " + author);
         } else {
             System.out.println("Libros del autor " + author + ":");
-            books.forEach(b -> System.out.println(b)); // Imprime cada libro
+            books.forEach(b -> System.out.println(b));
         }
     }
 }

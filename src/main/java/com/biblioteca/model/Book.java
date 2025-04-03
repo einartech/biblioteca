@@ -13,11 +13,9 @@ public class Book {
     private int year;
     private String publisher;
 
-    // Constructor sin parámetros
     public Book() {
     }
 
-    // Constructor generico
     public Book(String title, List<String> author, String description, long isbn, List<String> genre, int pages,
             int year, String publisher) {
         this.title = title;
@@ -30,7 +28,6 @@ public class Book {
         this.publisher = publisher;
     }
 
-    // Constructor con id
     public Book(int id, String title, List<String> author, String description,
             long isbn, List<String> genre,
             String publisher, int pages) {
@@ -45,20 +42,6 @@ public class Book {
         this.publisher = publisher;
     }
 
-    // public Book(String title, List<String> author, String description,
-    // long isbn, List<String> genre,
-    // String publisher, int pages) {
-    // this.title = title;
-    // this.author = author;
-    // this.description = description;
-    // this.isbn = isbn;
-    // this.genre = genre;
-    // this.pages = pages;
-    // this.year = year;
-    // this.publisher = publisher;
-    // }
-
-    // Getters y setters
     public int getId() {
         return id;
     }
