@@ -13,7 +13,7 @@ import com.biblioteca.config.DBManager;
 
 public class BookDAO {
 
-    // Método para crear un libro
+    
     public void createBook(Book book) {
         String sql = "INSERT INTO books (title, author, description, isbn, genre, pages, publisher, year) VALUES (?,?,?,?,?,?,?,?)";
 
@@ -38,7 +38,7 @@ public class BookDAO {
         }
     }
 
-    // Método para eliminar un libro
+    
     public void deleteBook(int id) {
         String sql = "DELETE FROM books WHERE id = ?";
 
@@ -50,7 +50,7 @@ public class BookDAO {
                 return;
             }
 
-            stmn.setLong(1, id); // Establecer el ISBN en la consulta
+            stmn.setLong(1, id);
             int rowsAffected = stmn.executeUpdate();
 
             if (rowsAffected > 0) {
@@ -63,7 +63,7 @@ public class BookDAO {
         }
     }
 
-    // Modificar un libro
+    
     public void updateBook(Book book) {
         String sql = "UPDATE books SET title = ?, author = ?, description = ?, isbn = ?, genre = ?, pages = ?, publisher = ?, year = ? WHERE id = ?";
 
@@ -72,7 +72,7 @@ public class BookDAO {
 
             stmt.setString(1, book.getTitle());
 
-            // Manejar autores nulos
+            
             if (book.getAuthor() != null) {
                 Array authorArray = connection.createArrayOf("text", book.getAuthor().toArray());
                 stmt.setArray(2, authorArray);
@@ -83,7 +83,7 @@ public class BookDAO {
             stmt.setString(3, book.getDescription());
             stmt.setLong(4, book.getIsbn());
 
-            // Manejar géneros nulos
+            
             if (book.getGenre() != null) {
                 Array genreArray = connection.createArrayOf("text", book.getGenre().toArray());
                 stmt.setArray(5, genreArray);
@@ -108,14 +108,14 @@ public class BookDAO {
         }
     }
 
-    // Metodo para ver todos los libros
+    
     public void getAllBooks() {
         String sql = "SELECT * FROM books";
 
         try (Connection connection = DBManager.initConnection();
                 PreparedStatement stmn = connection.prepareStatement(sql)) {
 
-            // Aquí puedes ejecutar la consulta y procesar los resultados
+            
             ResultSet rs = stmn.executeQuery();
             while (rs.next()) {
                 System.out.println("---------------------------");
@@ -134,14 +134,14 @@ public class BookDAO {
         }
     }
 
-    // Metodo para filtrar los libros por su género
+    
     public void getBooksByGenre(String genre) {
         String sql = "SELECT id, title, author, isbn, pages, publisher, year FROM books WHERE ? = ANY (genre)";
 
         try (Connection connection = DBManager.initConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
 
-            stmt.setString(1, genre); // Establecer el género en la consulta
+            stmt.setString(1, genre); 
             ResultSet rs = stmt.executeQuery();
 
             System.out.println("Libros encontrados para el género '" + genre + "':");
@@ -168,7 +168,7 @@ public class BookDAO {
         }
     }
 
-    // Método para buscar libros por autor
+    
     public List<Book> getBookByAuthor(List<String> authors) {
         String sql = "SELECT id, title, isbn, genre, pages, publisher, year FROM books WHERE author && ?";
 
@@ -177,9 +177,9 @@ public class BookDAO {
         try (Connection connection = DBManager.initConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
 
-            // Convertir la lista de autores a un arreglo de PostgreSQL
+            
             Array authorArray = connection.createArrayOf("text", authors.toArray());
-            stmt.setArray(1, authorArray); // Establecer el arreglo en la consulta
+            stmt.setArray(1, authorArray); 
 
             ResultSet rs = stmt.executeQuery();
 
@@ -202,8 +202,6 @@ public class BookDAO {
         return books;
     }
 
-    // Método para buscar libros por título
-    // Método para buscar un libro por título
     public List<Book> searchBookByTitle(String title) {
         List<Book> books = new ArrayList<>();
         String sql = "SELECT * FROM books WHERE title ILIKE ?";
@@ -216,7 +214,7 @@ public class BookDAO {
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                // Convertir los arrays de la base de datos a listas de Strings
+                
                 String[] authors = (String[]) rs.getArray("author").getArray();
                 String[] genres = (String[]) rs.getArray("genre").getArray();
 
