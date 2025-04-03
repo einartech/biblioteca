@@ -1,94 +1,71 @@
-# 📚 Tabla `books` - Guía de Interacción
+# 📚 Proyecto Biblioteca
 
-Este documento explica cómo interactuar con la tabla `books` de la base de datos. Incluye ejemplos de operaciones CRUD (Create, Read, Update, Delete) y consultas avanzadas.
+## 📌 Descripción
+Este proyecto tiene como objetivo modernizar la biblioteca del barrio mediante un sistema que permita gestionar los libros de manera eficiente. A través de una aplicación en terminal, la administradora podrá realizar operaciones CRUD sobre un inventario de libros almacenado en una base de datos PostgreSQL.
 
----
+## 🚀 Tecnologías Utilizadas
+- **Lenguaje de programación:** Java 21
+- **Base de datos:** PostgreSQL
+- **Gestión de dependencias:** Maven
+- **Entorno de desarrollo:** Visual Studio Code
+- **Control de versiones:** Git / GitHub
+- **Gestión de tareas:** Jira
 
-## **Estructura de la tabla `books`**
+## ⚙️ Funcionalidades
+- 📋 **Listar libros**: Mostrar todos los libros registrados en la base de datos.
+- ➕ **Añadir libros**: Permitir la inserción de nuevos libros con sus atributos.
+- ✏️ **Actualizar libros**: Modificar los datos de un libro existente.
+- 🗑 **Eliminar libros**: Borrar un libro del sistema.
+- 🔍 **Buscar libros**:
+  - Por título
+  - Por autor
+  - Por género literario
 
-| Campo         | Tipo           | Descripción                                                               |
-| ------------- | -------------- | ------------------------------------------------------------------------- |
-| `id`          | `integer`      | Identificador único del libro (clave primaria, generado automáticamente). |
-| `title`       | `varchar(100)` | Título del libro (obligatorio).                                           |
-| `author`      | `text[]`       | Lista de autores del libro (obligatorio).                                 |
-| `description` | `varchar(200)` | Breve descripción del libro (obligatorio).                                |
-| `isbn`        | `bigint`       | Número ISBN único del libro (obligatorio).                                |
-| `genre`       | `text[]`       | Lista de géneros literarios del libro (obligatorio).                      |
-| `pages`       | `integer`      | Número de páginas del libro (obligatorio).                                |
-| `publisher`   | `varchar(100)` | Editorial del libro (opcional).                                           |
-| `year`        | `integer`      | Año de publicación del libro (obligatorio).                               |
-
----
-
-## **Operaciones CRUD**
-
-### **1. CREATE (Insertar registros)**
-
-Para agregar un nuevo libro a la tabla, utiliza la instrucción `INSERT INTO`:
-
-```sql
-INSERT INTO public.books (title, author, description, isbn, genre, pages, publisher, year)
-VALUES
-('El Principito', ARRAY['Antoine de Saint-Exupéry'], 'Un clásico de la literatura infantil', 9781234567890, ARRAY['Ficción', 'Infantil'], 96, 'Reynal & Hitchcock', 1943);
+## 📂 Estructura del Proyecto
+El proyecto sigue una estructura organizada con Maven:
+```
+Biblioteca/
+│── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   ├── models/
+│   │   │   ├── services/
+│   │   │   ├── controllers/
+│   │   ├── resources/
+│   ├── test/
+│── pom.xml
+│── README.md
 ```
 
-### **2. READ (Consultar registros)**
+## 🛠 Instalación y Configuración
+1. **Clonar el repositorio**:
+   ```sh
+   git clone https://github.com/usuario/proyecto-biblioteca.git
+   ```
+2. **Configurar PostgreSQL**:
+   - Crear una base de datos llamada `biblioteca_db`.
+   - Configurar las credenciales en el archivo de conexión.
+3. **Compilar y ejecutar el proyecto**:
+   ```sh
+   mvn clean install
+   java -jar target/biblioteca.jar
+   ```
 
-Consulta para obtener todos los registros de la tabla, utiliza la instrucción `SELECT * FROM`:
+## 🔒 Consideraciones de Seguridad
+- Uso de consultas preparadas para prevenir inyección SQL.
+- Configuración de permisos en la base de datos.
+- Implementación de validaciones de entrada.
 
-```sql
-SELECT * FROM books;
-```
+## 👥 Metodología de Trabajo
+El desarrollo se basa en metodologías ágiles con un único sprint. Se recomienda seguir buenas prácticas de control de versiones y mantener una comunicación activa dentro del equipo.
 
-### **2.b. Obtener un libro por ID**
+## 📌 Autores
+- Carol Mas: PO/CODER.
+- Guadalupe Hani: SM/CODER.
+- Miriam Sánchez: CODER.
+- Priscila Guillén: CODER.
+- Einar Sánchez: CODER.
 
-Consulta para obtener un libro específico utilizando su id, utiliza la instrucción `SELECT * FROM & WHERE`:
+## 📜 Licencia
+Este proyecto se distribuye bajo la licencia MIT. Puedes usarlo y modificarlo libremente.
 
-```sql
-SELECT * FROM public.books WHERE id = 2;
-```
-
-### **2.c. Buscar libros por título**
-
-Consulta para buscar libros cuyo título contenga una palabra específica, utiliza la instrucción `SELECT * FROM & WHERE & ILIKE`:
-
-```sql
-SELECT * FROM books WHERE title ILIKE '%principito%';
-```
-
-### **2.d. Buscar libros por género**
-
-Consulta para buscar libros que pertenezcan a un género específico, utiliza la instrucción `SELECT * FROM & WHERE & ANY`:
-
-```sql
-SELECT * FROM books WHERE 'Ficción' = ANY (genre);
-```
-
-### **2.e. Buscar libros por autor**
-
-Consulta para buscar libros escritos por un autor específico, utiliza la instrucción `SELECT * FROM & WHERE & ANY`:
-
-```sql
-SELECT * FROM books  WHERE 'Antoine de Saint-Exupéry' = ANY (author);
-```
-
-### **3. UPDATE (Actualizar registros)**
-
-Para actualizar la información de un libro, utiliza la instrucción `UPDATE & SET & WHERE`:
-
-```sql
-UPDATE public.books
-SET
-    title = 'El Principito (Edición Especial)',
-    description = 'Una edición especial del clásico de la literatura infantil',
-    pages = 100
-WHERE id = 1;
-```
-
-### **4. DELETE (Eliminar registros)**
-
-Para eliminar un libro de la tabla, utiliza la instrucción: `DELETE FROM & WHERE`:
-
-```sql
-DELETE FROM public.books WHERE id = 1;
-```
