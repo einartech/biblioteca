@@ -60,6 +60,8 @@ public class BookView {
         bookController.createBook(book);
 
         System.out.println("El libro ha sido añadido correctamente.");
+        scanner.close(); // Cerrar el escáner
+
     }
 
     // Método para eliminar un libro
@@ -129,6 +131,8 @@ public class BookView {
         // Llamar al controlador para actualizar el libro
         bookController.updateBook(book);
         System.out.println("El libro ha sido actualizado correctamente.");
+        scanner.close(); // Cerrar el escáner
+
     }
 
     // Método para ver todos los libros
@@ -178,6 +182,8 @@ public class BookView {
                 System.out.println("Año: " + book.getYear());
                 System.out.println("---------------------------");
             }
+            scanner.close(); // Cerrar el escáner
+
         }
     }
 
